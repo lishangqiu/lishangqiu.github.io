@@ -46,7 +46,7 @@ function draw() {
 
 console.log("hi");
 requestAnimationFrame(draw);*/
-document.getElementById('main-body').setAttribute("style",`height:${$(document).height()-50}px`);
+document.getElementById('main-body').setAttribute("style",`height:${$(document).height()-90}px`);
 assignToDiv();
 var nodesjs = new NodesJs({
 
