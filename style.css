@@ -21,7 +21,7 @@ nav {
 
 
 #games-dropdown a{
-    font-size: 1.2em !important;
+    font-size: 1.3em !important;
 }
 
 #games-dropdown > .dropdown-menu a{
@@ -39,10 +39,17 @@ nav {
     color: #EEFBFB !important;
 }
 
-#main-body{
+#bio-panel{
+    margin-top: 1.4em !important;
+    margin-left: 5em !important;
+    margin-right: 5em !important;
 }
 
 canvas{
-    height: 919px;
-    width: 919px;
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+}
+
+#bio-panel > .panel-body *{
+    color: #12232E!important;
 }

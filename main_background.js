@@ -3,7 +3,7 @@ var ctx = canvas.getContext('2d');
 
 function assignToDiv(){ // this kind of function you are looking for
   dataUrl = canvas.toDataURL();
-  document.getElementById('main-body').style.background='url('+dataUrl+')'
+  document.getElementById('main-body').style.background='url('+dataUrl+')';
   document.getElementById("main-body").style.backgroundRepeat = 'no-repeat';
 
   canvas.style.display = 'none';
@@ -11,28 +11,32 @@ function assignToDiv(){ // this kind of function you are looking for
   canvas.width = document.getElementById('main-body').offsetWidth;
 }
 
-
-document.getElementById('main-body').setAttribute("style",`height:${$(document).height()-90}px`);
+// bad code, but i don't know any other way.
+document.getElementById('main-body').setAttribute("style",`height:${$(document).height()-50}px`);
 assignToDiv();
 var nodesjs = new NodesJs({
-
-    // container ID
     id: 'nodes',
-
-    // width
     width: canvas.width,
-
-    // height
     height: canvas.height,
 
-    // background transition options
-    backgroundFrom: [10, 25, 100],
-    backgroundTo: [25, 50, 150],
-    backgroundDuration: 4000,
+    backgroundFrom: [0, 5, 80],
+    backgroundTo: [10, 25, 95],
+    backgroundDuration: 6000,
 
-    // the number of particles
     number: 100,
-
-    // animation speed
     speed: 20,
 }, assignToDiv);
+
+var data = [
+    [0, 4, "Good night"], 
+    [5, 11, "Good morning"],          //Store messages in an array
+    [12, 17, "Good afternoon"],
+    [18, 24, "Good night"]
+],
+    hr = new Date().getHours();
+
+for(var i = 0; i < data.length; i++){
+    if(hr >= data[i][0] && hr <= data[i][1]){
+        document.getElementById('greeting-text').innerHTML= data[i][2] + " !";
+    }
+}
