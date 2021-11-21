@@ -12,40 +12,6 @@ function assignToDiv(){ // this kind of function you are looking for
 }
 
 
-/*(requestAnimationFrame =
-    window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.msRequestAnimationFrame ||
-    window.oRequestAnimationFrame ||
-    function(callback, element) { window.setTimeout(callback, 1000 / 60); };
-
-
-function draw() {
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.beginPath();
-    ctx.moveTo(Math.floor(Math.random()*canvas.width), Math.floor(Math.random()*canvas.height));
-    
-    for (i=0; i<100; i++)
-    {
-       ctx.lineTo(Math.floor(Math.random()*canvas.width), Math.floor(Math.random()*canvas.height));
-                  
-    }
-    ctx.strokeStyle = "green";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    setTimeout(function(){
-        requestAnimationFrame(draw);
-    }, (5));
-    
-}
-
-
-console.log("hi");
-requestAnimationFrame(draw);*/
 document.getElementById('main-body').setAttribute("style",`height:${$(document).height()-90}px`);
 assignToDiv();
 var nodesjs = new NodesJs({
