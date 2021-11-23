@@ -3,10 +3,10 @@ var ctx = canvas.getContext('2d');
 
 function assignToDiv(){ // this kind of function you are looking for
   dataUrl = canvas.toDataURL();
-  document.getElementById('main-body').style.background='url('+dataUrl+')';
-  document.getElementById("main-body").style.backgroundRepeat = 'no-repeat';
+  //document.getElementById('main-body').style.background='url('+dataUrl+')';
+  //document.getElementById("main-body").style.backgroundRepeat = 'no-repeat';
 
-  canvas.style.display = 'none';
+  //canvas.style.display = 'none';
   canvas.height = document.getElementById('main-body').offsetHeight;
   canvas.width = document.getElementById('main-body').offsetWidth;
 }
@@ -31,7 +31,7 @@ var data = [
     [0, 4, "Good night"], 
     [5, 11, "Good morning"],          //Store messages in an array
     [12, 17, "Good afternoon"],
-    [18, 24, "Good night"]
+    [18, 24, "Good evening"]
 ],
     hr = new Date().getHours();
 
