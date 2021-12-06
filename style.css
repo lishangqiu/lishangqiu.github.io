@@ -49,19 +49,17 @@ canvas{
 
 h1{
     position: absolute;
-    top: 1.5em;
+    top: 1.7em;
     left: 50%;
     margin: 0;
     transform: translate(-50%, 0);
-}
-
-h1{
     z-index: 10;
 }
 
+
 #panel-parent{
     position: absolute;
-    top: 10em;
+    top: 5em;
     left: 0; 
     right: 0; 
     margin-left: auto; 
@@ -72,4 +70,17 @@ h1{
 
 #bio-panel > .panel-body *{
     color: #12232E!important;
+}
+
+.gravity-game{
+    text-align: justify;
+    width: 307px;
+    border-style: solid;
+    border-color: #396c91;
+}
+
+.node-credit{
+    position: fixed;
+    bottom: 0em;
+    right: 0.5em;
 }

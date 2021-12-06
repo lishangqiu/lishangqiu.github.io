@@ -39,21 +39,38 @@
 
     <div id="main-body">
         <canvas id="nodes"></canvas>
-        <h1 style="margin-top: 0!important;margin-bottom: 0!important;padding-top: 12px!important;color: #FFFFFF;text-align: center;">Welcome to my website!</h1>
         <div class="panel-group" id="panel-parent">
             <div class="panel panel-default" id="bio-panel">
                 <div class="panel-body">
-                    <h4 style="margin-bottom: 0.4em!important;margin-top: 0.1em!important;font-size: 21px!important;" id="greeting-text"></h4>
-                    <h5 style="margin-bottom: 0.4em!important;margin-top: 0.4em!important;font-size: 16px!important;text-indent: 10px;">
+                    <p style="margin-bottom: 0.2em!important;margin-top: 0.2em!important;font-size: 30px!important;text-align: center;font-weight: bold;">
+                        Welcome to my website!
+                    </p>
+                    <p style="margin-bottom: 0.4em!important;margin-top: 0em!important;font-size: 19px!important;font-weight: 600;" id="greeting-text"></p>
+                    <p style="margin-bottom: 0em!important;margin-top: 0.4em!important;font-size: 16px!important;text-indent: 0;">
                         This is my personal website. I put my projects and interesting stuff here. 
-                    </h5>
-                    <h5 style="margin-bottom: 0.4em!important;margin-top: 0.1em!important;font-size: 16px!important;text-indent: 10px;">
-                        Enjoy your stay!
-                    </h5>
+                    </p>
+                    <hr>
+                    <div>
+                        <p style="margin-bottom: 0em!important;margin-top: 0.1em!important;font-size: 27px!important;text-align: center;font-weight: bold;">Featured Projects</p>
+                        <div class="gravity-game">
+                            <a href="gravitygame.html">
+                                <img src="assets/ProjectThumbnails/GravityGame.png" alt="GravityGame" style="width:301px;height:160px;">
+                                <p style="font-size: 18px;text-align: center;">Gravity Simulation Game</p>
+                            </a>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div>
+                        <h5 style="margin-bottom: 0em!important;margin-top: 0.1em!important;font-size: 20px!important;text-align: center;">Bio</h5>
                 </div>
             </div>
+        </div>
+        <div class="node-credit">
+            <p style="color: #EEFBFB;">Credit: Background library "nodes.js" from Oğuzhan Eroğlu</p>
+        </div>
     </div>
-    <script src="nodes.js"></script>
-    <script src="main_background.js"></script>
+    <script src="js/index_page/nodes.js"></script>
+    <script src="js/index_page/main_background.js"></script>
 </body>
 </html>

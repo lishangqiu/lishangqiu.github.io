@@ -2,11 +2,6 @@ var canvas = document.getElementsByTagName('canvas')[0];
 var ctx = canvas.getContext('2d');
 
 function assignToDiv(){ // this kind of function you are looking for
-  dataUrl = canvas.toDataURL();
-  //document.getElementById('main-body').style.background='url('+dataUrl+')';
-  //document.getElementById("main-body").style.backgroundRepeat = 'no-repeat';
-
-  //canvas.style.display = 'none';
   canvas.height = document.getElementById('main-body').offsetHeight;
   canvas.width = document.getElementById('main-body').offsetWidth;
 }
@@ -19,8 +14,8 @@ var nodesjs = new NodesJs({
     width: canvas.width,
     height: canvas.height,
 
-    backgroundFrom: [0, 5, 80],
-    backgroundTo: [10, 25, 95],
+    backgroundFrom: [0, 5, 60],
+    backgroundTo: [10, 25, 75],
     backgroundDuration: 6000,
 
     number: 100,
@@ -37,6 +32,6 @@ var data = [
 
 for(var i = 0; i < data.length; i++){
     if(hr >= data[i][0] && hr <= data[i][1]){
-        document.getElementById('greeting-text').innerHTML= data[i][2] + " !";
+        document.getElementById('greeting-text').innerHTML= data[i][2] + "!";
     }
 }
