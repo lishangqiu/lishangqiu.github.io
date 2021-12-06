@@ -101,7 +101,6 @@ class GravityBody{
 
         this.label = this.sceneObj.add.text(-1, -1, this.name, {color:"#00ffff"});
         this.label.depth = 1;
-        this.sceneObj.add.circle()
     }
 
     getAngleDisplacements(radius){
