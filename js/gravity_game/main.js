@@ -1,6 +1,6 @@
 class Game extends Phaser.Scene{
     constructor(){
-        super();
+        super("GameScene");
     }
 
     preload(){
@@ -11,14 +11,13 @@ class Game extends Phaser.Scene{
     }
 
     create(){
-        var bg = this.add.image(960, 468.5, "background");
+        this.add.image(middleX, middleY, "background");
 
         this.createBody(0, 0, 0, 0, 69.34e6, 1.989e30, "Sun", "Sun");
         this.createBody(149e9, 0, 0, -30000, 6.73e6, 5.972e24, "Earth", "Earth");
         this.createBody(-180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
 
         this.add.text(20, 10, "Scale: 5x10^10 meters/pixel\nTime Scale: Each second in simulation = 1000000 in real life\nRadius are upscaled by: 500x for visibility\n");
-
         this.add.graphics(this);
     }
 
@@ -52,7 +51,8 @@ const config = {
     width: 1920,
     height: 937,
     backgroundColor: "#FF0000",
-    scene: [Game]
+    scene: [Game, UIScene],
+    mipmapFilter: "LINEAR_MIPMAP_LINEAR"
 }
 
 var GravityBodies = [];

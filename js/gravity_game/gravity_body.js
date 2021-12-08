@@ -5,11 +5,11 @@ const resolutionTime = 16000; // simulated second/real world second
 const radiusUpscale = 500;
 const labelDegree = -225;
 
-const middleX = 960;
-const middleY = 468.5;
+var middleX = 960;
+var middleY = 468.5;
 
 var a = 0;
-var b =0;
+var b = 0;
 var _idIndex = 0;
 
 class GravityBody{
