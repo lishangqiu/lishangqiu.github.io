@@ -4,15 +4,15 @@ import { SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
 const gravitationalConstant = 6.67428e-11;
 //const screenScale = 0.00000470883; // pixel/meter
 const screenScale = 0.000000002; // pixel/meter
-const resolutionTime = 16000; // simulated second/real world second
+const resolutionTime = 4000; // simulated second/frame
 const radiusUpscale = 500;
 const labelDegree = -225;
 
 var middleX = SIZE_WIDTH_SCREEN/2;
 var middleY = SIZE_HEIGHT_SCREEN/2;
 
-
 var _idIndex = 0;
+export {resolutionTime};
 
 export default class GravityBody{
     // starting_pos(note coordinates start from the center as 0,0), starting_velocity, radius, (density or mass) in SI units
@@ -44,8 +44,8 @@ export default class GravityBody{
     // returns displacement(unit: m)
     simGravity(){
         // this is seperate from updatePos because we might want to calculate path
-        var deltaTime = ((new Date().getTime() - this.lastSimulated) / 1000) *10000000; // /1000 is to convert from ms to s
-        this.lastSimulated = new Date().getTime();
+        //var deltaTime = ((new Date().getTime() - this.lastSimulated) / 1000) * updateTime; // /1000 is to convert from ms to s
+        //this.lastSimulated = new Date().getTime();
         var currID = this.id;
         var mass = this.mass;
         var pos = this.pos;
@@ -71,11 +71,11 @@ export default class GravityBody{
                 accelerations.push(GravityBody.getGravityAcceleration(mass, item.mass, pos, item.pos));
             }
         });
-        var gravitySumVelocity = GravityBody.addVectors(accelerations).multiplyScalar(deltaTime);
+        var gravitySumVelocity = GravityBody.addVectors(accelerations).multiplyScalar(resolutionTime);
         gravitySumVelocity.add(this.velocity);
         this.velocity = gravitySumVelocity;
         
-        this.pos.add(gravitySumVelocity.clone().multiplyScalar(deltaTime)); // add the displacement to the current position
+        this.pos.add(gravitySumVelocity.clone().multiplyScalar(resolutionTime)); // add the displacement to the current position
 
         // Orbit drawing
         if (
@@ -90,9 +90,10 @@ export default class GravityBody{
     }
 
     drawNewPos(){
-        this.simGravity();
-        this.simGravity();
-        this.simGravity();
+        for (let i=0;i<GravityBody.simTimes;i++){
+            this.simGravity();
+        }
+
         this.sprite.setPosition(this.pos.x * screenScale + middleX, this.pos.y * screenScale + middleY);
 
         var diplacements = this.getAngleDisplacements(this.radius * screenScale * radiusUpscale);

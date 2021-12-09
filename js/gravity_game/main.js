@@ -33,7 +33,7 @@ const config = {
 }
 
 const game = new Phaser.Game(config)
-
+export {game};
 // Global
 game.debugMode = true
 game.embedded = false // game is embedded into a html iframe/object
