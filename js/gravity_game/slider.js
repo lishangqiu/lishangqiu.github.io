@@ -40,6 +40,7 @@ export default class SliderUI{
     }
 
     onPlus(){
+        console.log(this.img.slider.value);
         this.img.slider.value -= 0.01;
     }
 

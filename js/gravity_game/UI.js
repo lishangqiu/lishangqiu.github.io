@@ -30,11 +30,11 @@ export default  class UIScene extends Phaser.Scene{
         this.add.text(20*SCREEN_SCALE_INCREASE, 10*SCREEN_SCALE_INCREASE, 
             "Scale: 5x10^10 meters/pixel\n\nRadius are upscaled by: 500x for visibility\n").setScale(SCREEN_SCALE_INCREASE);
 
-        this.simSpeedText = this.add.text(-30*SCREEN_SCALE_INCREASE, 850*SCREEN_SCALE_INCREASE, 
+        this.simSpeedText = this.add.text(-50*SCREEN_SCALE_INCREASE, 850*SCREEN_SCALE_INCREASE, 
             "you're not supposed to see this").setScale(SCREEN_SCALE_INCREASE);
         this.simSpeedText.depth = 3;
 
-        this.simSpeedSlider = new SliderUI(-710, 260, 400 , this, 0xD9DDDC);
+        this.simSpeedSlider = new SliderUI(-600, 260, 400 , this, 0xD9DDDC);
         this.add.text(-750*SCREEN_SCALE_INCREASE, 170*SCREEN_SCALE_INCREASE, "Simulation\n  Speed").setScale(SCREEN_SCALE_INCREASE);
     }
 
