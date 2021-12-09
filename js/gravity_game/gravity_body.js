@@ -1,3 +1,6 @@
+import Game from "./main_scene.js";
+import { SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
+
 const gravitationalConstant = 6.67428e-11;
 //const screenScale = 0.00000470883; // pixel/meter
 const screenScale = 0.000000002; // pixel/meter
@@ -5,14 +8,13 @@ const resolutionTime = 16000; // simulated second/real world second
 const radiusUpscale = 500;
 const labelDegree = -225;
 
-var middleX = 960;
-var middleY = 468.5;
+var middleX = SIZE_WIDTH_SCREEN/2;
+var middleY = SIZE_HEIGHT_SCREEN/2;
 
-var a = 0;
-var b = 0;
+
 var _idIndex = 0;
 
-class GravityBody{
+export default class GravityBody{
     // starting_pos(note coordinates start from the center as 0,0), starting_velocity, radius, (density or mass) in SI units
     constructor(options){
         this.pos = options.starting_pos.clone();
@@ -42,7 +44,7 @@ class GravityBody{
     // returns displacement(unit: m)
     simGravity(){
         // this is seperate from updatePos because we might want to calculate path
-        //var deltaTime = ((new Date().getTime() - this.lastSimulated) / 1000) * updateTime; // /1000 is to convert from ms to s
+        var deltaTime = ((new Date().getTime() - this.lastSimulated) / 1000) *10000000; // /1000 is to convert from ms to s
         this.lastSimulated = new Date().getTime();
         var currID = this.id;
         var mass = this.mass;
@@ -51,12 +53,12 @@ class GravityBody{
 
         
         // check if we've collided with something else
-        GravityBodies.forEach(function(item, index, array){
+        Game.GravityBodies.forEach(function(item, index, array){
             if (item.id != currID){
                 var distVector = pos.clone().subtract(item.pos);
                 if (Math.sqrt(distVector.x*distVector.x + distVector.y*distVector.y) < ((item.radius + radius))*radiusUpscale){
                     if (item.radius < radius){
-                        GravityBodies.splice(GravityBodies.indexOf(item), 1);
+                        Game.GravityBodies.splice(Game.GravityBodies.indexOf(item), 1);
                         item.deleteItem();
                     }
                 }
@@ -64,17 +66,18 @@ class GravityBody{
         });
 
         var accelerations = []
-        GravityBodies.forEach(function(item, index, array){
+        Game.GravityBodies.forEach(function(item, index, array){
             if (item.id != currID){
                 accelerations.push(GravityBody.getGravityAcceleration(mass, item.mass, pos, item.pos));
             }
         });
-        var gravitySumVelocity = GravityBody.addVectors(accelerations).multiplyScalar(resolutionTime);
+        var gravitySumVelocity = GravityBody.addVectors(accelerations).multiplyScalar(deltaTime);
         gravitySumVelocity.add(this.velocity);
         this.velocity = gravitySumVelocity;
         
-        this.pos.add(gravitySumVelocity.clone().multiplyScalar(resolutionTime)); // add the displacement to the current position
+        this.pos.add(gravitySumVelocity.clone().multiplyScalar(deltaTime)); // add the displacement to the current position
 
+        // Orbit drawing
         if (
             (Math.abs(((this.pos.x * screenScale) - this.lastPoint.x)) > 1) ||
             (Math.abs(((this.pos.y * screenScale) - this.lastPoint.y)) > 1)){
@@ -87,6 +90,8 @@ class GravityBody{
     }
 
     drawNewPos(){
+        this.simGravity();
+        this.simGravity();
         this.simGravity();
         this.sprite.setPosition(this.pos.x * screenScale + middleX, this.pos.y * screenScale + middleY);
 

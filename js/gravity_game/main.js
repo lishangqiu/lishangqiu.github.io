@@ -1,59 +1,50 @@
-class Game extends Phaser.Scene{
-    constructor(){
-        super("GameScene");
-    }
+import Handler from './scaling_manager.js'
+import UIScene from './UI.js'
+import Game from './main_scene.js'
+import {MAX_SIZE_WIDTH_SCREEN,MAX_SIZE_HEIGHT_SCREEN,MIN_SIZE_WIDTH_SCREEN,
+    MIN_SIZE_HEIGHT_SCREEN,SIZE_WIDTH_SCREEN,SIZE_HEIGHT_SCREEN} from "./config.js"
 
-    preload(){
-        // load stuff soon
-        this.load.image('background', 'assets/GravityGame/background.jpg');
-        this.load.image("Earth", "assets/GravityGame/earth.png");
-        this.load.image("Sun", "assets/GravityGame/sun.png");
-    }
+// Aspect Ratio 16:9 - Portrait
 
-    create(){
-        this.add.image(middleX, middleY, "background");
-
-        this.createBody(0, 0, 0, 0, 69.34e6, 1.989e30, "Sun", "Sun");
-        this.createBody(149e9, 0, 0, -30000, 6.73e6, 5.972e24, "Earth", "Earth");
-        this.createBody(-180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
-
-        this.add.text(20, 10, "Scale: 5x10^10 meters/pixel\nTime Scale: Each second in simulation = 1000000 in real life\nRadius are upscaled by: 500x for visibility\n");
-        this.add.graphics(this);
-    }
-
-    update(){
-        GravityBodies.forEach(function(item, index, array) {
-            item.drawNewPos();
-        });
-    }
-
-    createBody(posX, posY, velocityX, velocityY, radius, mass, textureName, name){
-        const config = {
-            starting_pos : new Victor(posX, posY),
-            starting_velocity : new Victor(velocityX, velocityY),
-            radius : radius,
-            mass : mass,
-            sceneObj : this,
-            textureName : textureName,
-            name: name,
-        };
-        GravityBodies.push(new GravityBody(config));
-    }
-}
 
 const config = {
-    parent: "game",
     type: Phaser.AUTO,
     scale: {
         mode: Phaser.Scale.RESIZE,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
+        parent: 'game',
+        width: SIZE_WIDTH_SCREEN,
+        height: SIZE_HEIGHT_SCREEN,
+        min: {
+            width: MIN_SIZE_WIDTH_SCREEN,
+            height: MIN_SIZE_HEIGHT_SCREEN
+        },
+        max: {
+            width: MAX_SIZE_WIDTH_SCREEN,
+            height: MAX_SIZE_HEIGHT_SCREEN
+        }
     },
-    width: 1920,
-    height: 937,
-    backgroundColor: "#FF0000",
-    scene: [Game, UIScene],
+    dom: {
+        createContainer: true
+    },
+    backgroundColor: '#000000',
+    scene: [Handler, UIScene, Game],
     mipmapFilter: "LINEAR_MIPMAP_LINEAR"
+
 }
 
-var GravityBodies = [];
-var game = new Phaser.Game(config);
+const game = new Phaser.Game(config)
+
+// Global
+game.debugMode = true
+game.embedded = false // game is embedded into a html iframe/object
+
+game.screenBaseSize = {
+    maxWidth: MAX_SIZE_WIDTH_SCREEN,
+    maxHeight: MAX_SIZE_HEIGHT_SCREEN,
+    minWidth: MIN_SIZE_WIDTH_SCREEN,
+    minHeight: MIN_SIZE_HEIGHT_SCREEN,
+    width: SIZE_WIDTH_SCREEN,
+    height: SIZE_HEIGHT_SCREEN
+}
+
+game.orientation = "portrait"
