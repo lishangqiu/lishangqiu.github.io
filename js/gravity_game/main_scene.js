@@ -1,5 +1,6 @@
 import GravityBody from "./gravity_body.js"
-import {MIN_ZOOM, MAX_ZOOM, SCREEN_SCALE_INCREASE} from "./config.js"
+import {MIN_ZOOM, MAX_ZOOM, SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
+
 
 // this scene mostly handles the scaling of the screen and transformations by mouse
 export default class Game extends Phaser.Scene{
@@ -7,30 +8,27 @@ export default class Game extends Phaser.Scene{
     startY = null;
 
     constructor(){
-        super({ key: 'game' })
+        super('game');
         Game.GravityBodies = [];
     }
 
     preload(){
-        this.width = this.game.screenBaseSize.width
-        this.height = this.game.screenBaseSize.height
 
         // load stuff soon
         this.load.image('background', 'assets/GravityGame/background.jpg');
         this.load.image("Earth", "assets/GravityGame/earth.png");
         this.load.image("Sun", "assets/GravityGame/sun.png");
-
-        this.handlerScene = this.scene.get('handler')
-        this.handlerScene.sceneRunning = 'preload'
-        this.sceneStopped = false;
     }
 
     create(){
         // CONFIG SCENE         
-        this.handlerScene.updateResize(this);
+        //this.handlerScene.updateResize(this);
 
         // Deal with zoom stuff
+        this.scene.launch("UIScene");
+
         this.cameras.main.setZoom(1);
+        this.cameras.main.centerOn(SIZE_WIDTH_SCREEN/2, SIZE_HEIGHT_SCREEN/2);
         Game.currZoom = 1;
 
         this.input.on('wheel', function (pointer, gameObjects, deltaX, deltaY, deltaZ) {
@@ -42,6 +40,7 @@ export default class Game extends Phaser.Scene{
             
             camera.setZoom(newZoom);
             Game.currZoom = newZoom;
+            console.log(newZoom);
         });
 
         this.startScrollX = this.cameras.main.scrollX;
@@ -82,7 +81,6 @@ export default class Game extends Phaser.Scene{
                 this.startX = pointer.x;
                 this.startY = pointer.y;
             }
-            console.log(Game.currZoom);
             this.cameras.main.setScroll(this.startScrollX - (pointer.x-this.startX) / Game.currZoom, this.startScrollY - (pointer.y-this.startY) / Game.currZoom);
         }
         else{

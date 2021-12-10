@@ -4,6 +4,7 @@ export default class Handler extends Phaser.Scene {
     sceneRunning = null
     
     constructor() {
+        asf
         super('handler')
     }
     
@@ -56,7 +57,9 @@ export default class Handler extends Phaser.Scene {
         const scaleX = scene.sizer.width / this.game.screenBaseSize.width
         const scaleY = scene.sizer.height / this.game.screenBaseSize.height
     
-        camera.setZoom(Math.max(scaleX, scaleY))
+        camera.setZoom(Math.max(scaleX, scaleY));
+        console.log(this.game.screenBaseSize.width / 2);
+        console.log(this.game.screenBaseSize.height / 2);
         camera.centerOn(this.game.screenBaseSize.width / 2, this.game.screenBaseSize.height / 2)
     }
 }

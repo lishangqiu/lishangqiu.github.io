@@ -10,7 +10,8 @@ import {MAX_SIZE_WIDTH_SCREEN,MAX_SIZE_HEIGHT_SCREEN,MIN_SIZE_WIDTH_SCREEN,
 const config = {
     type: Phaser.AUTO,
     scale: {
-        mode: Phaser.Scale.RESIZE,
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
         parent: 'game',
         width: SIZE_WIDTH_SCREEN,
         height: SIZE_HEIGHT_SCREEN,
@@ -27,24 +28,10 @@ const config = {
         createContainer: true
     },
     backgroundColor: '#000000',
-    scene: [Handler, UIScene, Game],
+    scene: [Game, UIScene],
     mipmapFilter: "LINEAR_MIPMAP_LINEAR"
 
 }
 
 const game = new Phaser.Game(config)
 export {game};
-// Global
-game.debugMode = true
-game.embedded = false // game is embedded into a html iframe/object
-
-game.screenBaseSize = {
-    maxWidth: MAX_SIZE_WIDTH_SCREEN,
-    maxHeight: MAX_SIZE_HEIGHT_SCREEN,
-    minWidth: MIN_SIZE_WIDTH_SCREEN,
-    minHeight: MIN_SIZE_HEIGHT_SCREEN,
-    width: SIZE_WIDTH_SCREEN,
-    height: SIZE_HEIGHT_SCREEN
-}
-
-game.orientation = "portrait"

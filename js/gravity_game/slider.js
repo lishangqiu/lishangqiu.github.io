@@ -1,10 +1,10 @@
 import {SCREEN_SCALE_INCREASE} from "./config.js"
 
-const sliderScale = 0.05*SCREEN_SCALE_INCREASE;
-var plusScale = 0.05*SCREEN_SCALE_INCREASE;
-var minusScale = 0.04*SCREEN_SCALE_INCREASE;
-const plusMinusOffset = 19*SCREEN_SCALE_INCREASE;
-const lineLengthOffset = 3*SCREEN_SCALE_INCREASE;
+const sliderScale = 0.05;
+var plusScale = 0.05;
+var minusScale = 0.04;
+const plusMinusOffset = 19;
+const lineLengthOffset = 3;
 const imageTint = 0x999999;
 
 export default class SliderUI{
@@ -25,7 +25,7 @@ export default class SliderUI{
                 x: this.img.x,
                 y: this.img.y+length*SCREEN_SCALE_INCREASE,
             }],
-            value: 0.25
+            value: 1
         });
         //this.img.depth = 1*SCREEN_SCALE_INCREASE;
 
