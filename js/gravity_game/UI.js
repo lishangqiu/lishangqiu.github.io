@@ -7,6 +7,8 @@ import {game} from "./main.js"
 export default  class UIScene extends Phaser.Scene{
     constructor(){
         super("UIScene");
+        this.lastTime = new Date().getTime();
+        this.timeSpent = 0; // in seconds
     }
 
     preload(){
@@ -24,19 +26,26 @@ export default  class UIScene extends Phaser.Scene{
 
         this.simSpeedText = this.add.text(-1, 1000, 
             "Time Scale: Each second in simulation = 100.05 hours in real life(its updating to match your framerate)");
-        this.simSpeedText.setPosition(SIZE_WIDTH_SCREEN/2-(this.simSpeedText.width/2), 1030);
+        this.simSpeedText.setPosition(SIZE_WIDTH_SCREEN/2-(this.simSpeedText.width/2), 1050);
         this.simSpeedText.depth = 3;
         
         this.simSpeedSlider = new SliderUI(30, 150, 240 , this, 0xD9DDDC);
         this.add.text(18, 230, "Simulation\n  Speed");
+
+        this.earthDaysText = this.add.text(30, 900, "Earth days").setFontSize(20);
     }
 
     update(){
+        var deltaTime = ((new Date().getTime() - this.lastTime) / 1000);
+        this.lastTime = new Date().getTime();
         // set the amount of times of simulation
         GravityBody.simTimes = Math.round(((1-this.simSpeedSlider.img.slider.value) * 60) + 8);
 
         this.simSpeedText.text = "Time Scale: Each second in simulation = " + 
-        (resolutionTime*GravityBody.simTimes/3600*game.loop.actualFps).toFixed(3) + " hours in real life(its updating to match your framerate)";
+        (resolutionTime*GravityBody.simTimes*game.loop.actualFps/3600).toFixed(3) + " hours in real life(its updating to match your framerate)";
+
+        this.timeSpent += resolutionTime*GravityBody.simTimes;
+        this.earthDaysText.text = "Earth days: " + (this.timeSpent/86400).toFixed(0);
     }
     
 }
