@@ -9,8 +9,8 @@ const imageTint = 0x999999;
 
 export default class SliderUI{
     constructor(posX, posY, length, sceneObj, color){
-        this.img = sceneObj.add.image(posX*SCREEN_SCALE_INCREASE, posY*SCREEN_SCALE_INCREASE, "slider");
-        this.img.setScale(plusScale, plusScale);
+        this.img = sceneObj.add.circle(posX*SCREEN_SCALE_INCREASE, posY*SCREEN_SCALE_INCREASE, 13, 0xffffff);
+        this.img.depth = 2;
 
         sceneObj.add.graphics()
         .lineStyle(2*SCREEN_SCALE_INCREASE, color, 1)

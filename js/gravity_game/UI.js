@@ -3,19 +3,24 @@ import GravityBody from "./gravity_body.js";
 import {resolutionTime} from "./gravity_body.js"
 import {SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from "./config.js"
 import {game} from "./main.js"
+import SidePanel from "./side_panel.js";
 
-export default  class UIScene extends Phaser.Scene{
+export default class UIScene extends Phaser.Scene{
     constructor(){
         super("UIScene");
         this.lastTime = new Date().getTime();
         this.timeSpent = 0; // in seconds
+        this.sidePanelObj = new SidePanel();
     }
 
     preload(){
         this.load.plugin('rexsliderplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexsliderplugin.min.js', true);
+        this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
         UIScene.sliderImg = this.load.image("slider", "assets/GravityGame/slider.png");
         UIScene.plusImg = this.load.image("plus_button", "assets/GravityGame/plus_button.png");
         UIScene.minusImg = this.load.image("minus_button", "assets/GravityGame/minus_button.png");
+
+        UIScene.buttonImg = this.load.image("button_image", "assets/GravityGame/button.png");
     }
 
     create(){
@@ -33,6 +38,7 @@ export default  class UIScene extends Phaser.Scene{
         this.add.text(18, 230, "Simulation\n  Speed");
 
         this.earthDaysText = this.add.text(30, 900, "Earth days").setFontSize(20);
+        this.sidePanelObj.create(this);
     }
 
     update(){
@@ -46,6 +52,7 @@ export default  class UIScene extends Phaser.Scene{
 
         this.timeSpent += resolutionTime*GravityBody.simTimes;
         this.earthDaysText.text = "Earth days: " + (this.timeSpent/86400).toFixed(0);
+        this.sidePanelObj.update();
     }
     
 }

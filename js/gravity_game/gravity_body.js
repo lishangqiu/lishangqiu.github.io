@@ -60,6 +60,7 @@ export default class GravityBody{
                     if (item.radius < radius){
                         Game.GravityBodies.splice(Game.GravityBodies.indexOf(item), 1);
                         item.deleteItem();
+                        item.deleted = true;
                     }
                 }
             }

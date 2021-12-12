@@ -40,7 +40,6 @@ export default class Game extends Phaser.Scene{
             
             camera.setZoom(newZoom);
             Game.currZoom = newZoom;
-            console.log(newZoom);
         });
 
         this.startScrollX = this.cameras.main.scrollX;
@@ -51,7 +50,8 @@ export default class Game extends Phaser.Scene{
         // create celestrial bodies
         this.createBody(0, 0, 0, 0, 69.34e6, 1.989e30, "Sun", "Sun");
         this.createBody(149e9, 0, 0, -30000, 6.73e6, 5.972e24, "Earth", "Earth");
-        //this.createBody(-180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
+
+        this.createBody(-180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
 
     }
 
