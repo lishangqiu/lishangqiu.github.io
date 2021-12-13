@@ -1,6 +1,10 @@
 import Game from "./main_scene.js"
 
 const iconSize = 64;
+const name_link = {
+    "Earth": "assets/GravityGame/earth.png",
+    "Sun": "assets/GravityGame/sun.png"
+}
 
 export default class SidePanel{
     constructor(){
@@ -15,13 +19,14 @@ export default class SidePanel{
     create(sceneObj){
         //var sidePanel = this.add.rectangle(1750, 0, 390, 2160, 0xADD8E6);
 
-        sceneObj.add.line(0,0,1600,0,1600,2160,0xffffff);
+        sceneObj.add.line(0,0,1500,0,1500,2160,0xffffff);
 
-        var y_coord = 40;
         for (let i = 0; i < Game.GravityBodies.length; i++){
-            this.buttons.push(new SideButton(y_coord, i, sceneObj));
-            y_coord += 80;
+            this.buttons.push(new SidePanelButton(i));
         }
+
+        var dom = sceneObj.add.dom(1517, 0, "#sidepanel");
+        dom.setOrigin(0, 0)
     }
 
     update(){
@@ -39,39 +44,50 @@ export default class SidePanel{
     }
 }
 
-class SideButton{
-    constructor(y_coordinate, bodyIndex, sceneObj){
-        var button_icon = sceneObj.add.image(-120, 0, Game.GravityBodies[bodyIndex].sprite.texture.key);
-        button_icon.setScale(iconSize/button_icon.width);
-        var button_text = sceneObj.add.text(-60, -6, Game.GravityBodies[bodyIndex].label.text, {color:"#ffffff"}).setFontSize(18);
-        this.button_image = sceneObj.add.image(0, 0, "button_image").setScale(0.34);
-        var button_image = this.button_image;
 
-        var container = sceneObj.add.container(1764, y_coordinate, [button_icon, this.button_image, button_text]);
-        container.setSize(this.button_image.width/2, this.button_image.height/2);
-        container.sendToBack(this.button_image);
-
-        var buttons = sceneObj.rexUI.add.buttons({orientation: 0, buttons: [container]});
-        buttons.on('button.click', function(button, index, pointer, event) {
-
-        });
-        buttons.on('button.over', function(button, index, pointer, event) {
-            button_image.setTint(0xc4c4c4);
-        });
-        buttons.on('button.out', function(button, index, pointer, event) {
-            button_image.setTint(0xfffffff);
-        });
-        this.buttons = buttons;
+class SidePanelButton{
+    constructor(bodyIndex){
+        this.addTemplate(Game.GravityBodies[bodyIndex].label.text, Game.GravityBodies[bodyIndex].sprite.texture.key);
 
         this.id = Game.GravityBodies[bodyIndex].id;
     }
 
-    button_over(){
-        
-    }
+    addTemplate(bodyName, imageName){
+        var template = document.getElementById("gravity-body");
+        var clon = template.content.cloneNode(true);
+        clon.getElementById("name").textContent = bodyName;
+        clon.getElementById("icon-pic").src = name_link[imageName];
 
+        var panel = clon.getElementById("panel-id");
+        this.panel = panel;
+        this.panel_body = panel.children[0];
+
+        clon.getElementById("button").onmouseover = () => {
+            if (!this.dead){
+                panel.style.backgroundColor = "#0f0f0f";
+            }
+        };
+    
+        clon.getElementById("button").onmouseout = () => {
+            if (!this.dead){
+                panel.style.backgroundColor = "#1a1a1a";
+            }
+        };
+    
+        
+        document.getElementById("side-panel-id").appendChild(clon);
+    }
+    
     dead_now(){
-        this.buttons.setButtonEnable(false);
-        this.button_image.setTint(0x000000);
+        if (this.dead){
+            return;
+        }
+        this.dead = true;
+        this.panel.style.backgroundColor = "#000000";
+        var node = document.createElement("img");
+        node.src = "assets/GravityGame/tombstone.png"
+        node.style.width = "40px";
+        node.style.marginLeft = "190px";
+        this.panel_body.appendChild(node);
     }
 }

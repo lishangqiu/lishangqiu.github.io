@@ -80,8 +80,8 @@ export default class GravityBody{
 
         // Orbit drawing
         if (
-            (Math.abs(((this.pos.x * screenScale) - this.lastPoint.x)) > 1) ||
-            (Math.abs(((this.pos.y * screenScale) - this.lastPoint.y)) > 1)){
+            (Math.abs(((this.pos.x * screenScale) - this.lastPoint.x)) > 1.5) ||
+            (Math.abs(((this.pos.y * screenScale) - this.lastPoint.y)) > 1.5)){
             this.sceneObj.add.line(0, 0, this.lastPoint.x + middleX, this.lastPoint.y + middleY,
                 (this.pos.x * screenScale) + middleX, (this.pos.y * screenScale) + middleY, 0xf8f9f0);
             this.lastPoint = this.pos.clone().multiplyScalar(screenScale);
