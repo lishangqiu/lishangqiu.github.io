@@ -1,10 +1,7 @@
 import Game from "./main_scene.js"
+import {name_link} from "./UI.js"
 
 const iconSize = 64;
-const name_link = {
-    "Earth": "assets/GravityGame/earth.png",
-    "Sun": "assets/GravityGame/sun.png"
-}
 
 export default class SidePanel{
     constructor(){
@@ -22,7 +19,7 @@ export default class SidePanel{
         sceneObj.add.line(0,0,1500,0,1500,2160,0xffffff);
 
         for (let i = 0; i < Game.GravityBodies.length; i++){
-            this.buttons.push(new SidePanelButton(i));
+            this.buttons.push(new SidePanelButton(Game.GravityBodies[i].name, sceneObj));
         }
 
         var dom = sceneObj.add.dom(1517, 0, "#sidepanel");
@@ -46,13 +43,13 @@ export default class SidePanel{
 
 
 class SidePanelButton{
-    constructor(bodyIndex){
-        this.addTemplate(Game.GravityBodies[bodyIndex].label.text, Game.GravityBodies[bodyIndex].sprite.texture.key);
+    constructor(bodyName, sceneObj){
+        this.addTemplate(Game.GravityBodiesDict[bodyName].label.text, Game.GravityBodiesDict[bodyName].sprite.texture.key, sceneObj);
 
-        this.id = Game.GravityBodies[bodyIndex].id;
+        this.id = Game.GravityBodiesDict[bodyName].id;
     }
 
-    addTemplate(bodyName, imageName){
+    addTemplate(bodyName, imageName, sceneObj){
         var template = document.getElementById("gravity-body");
         var clon = template.content.cloneNode(true);
         clon.getElementById("name").textContent = bodyName;
@@ -73,8 +70,8 @@ class SidePanelButton{
                 panel.style.backgroundColor = "#1a1a1a";
             }
         };
+        clon.getElementById("button").onclick = function() {sceneObj.switchSideBar(bodyName)};
     
-        
         document.getElementById("side-panel-id").appendChild(clon);
     }
     

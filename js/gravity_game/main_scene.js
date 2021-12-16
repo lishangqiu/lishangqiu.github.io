@@ -10,6 +10,8 @@ export default class Game extends Phaser.Scene{
     constructor(){
         super('game');
         Game.GravityBodies = [];
+        Game.GravityBodiesDict = {};
+        Game.paused = false;
     }
 
     preload(){
@@ -46,19 +48,25 @@ export default class Game extends Phaser.Scene{
         this.startScrollY = this.cameras.main.scrollY;
 
         this.input.on('pointermove', this.onPointerMove, this);
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // create celestrial bodies
         this.createBody(0, 0, 0, 0, 69.34e6, 1.989e30, "Sun", "Sun");
         this.createBody(149e9, 0, 0, -30000, 6.73e6, 5.972e24, "Earth", "Earth");
-
         this.createBody(-180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
 
     }
 
     update(){
-        Game.GravityBodies.forEach(function(item, index, array) {
-            item.drawNewPos();
-        });
+        if (this.input.keyboard.checkDown(this.keySpace, 800)){
+            Game.paused = !Game.paused;
+            console.log(Game.paused);
+        }
+        if (!Game.paused){
+            Game.GravityBodies.forEach(function(item, index, array) {
+                item.drawNewPos();
+            });
+        }
     }
 
     createBody(posX, posY, velocityX, velocityY, radius, mass, textureName, name){
@@ -71,7 +79,10 @@ export default class Game extends Phaser.Scene{
             textureName : textureName,
             name: name,
         };
-        Game.GravityBodies.push(new GravityBody(config));
+
+        var obj = new GravityBody(config);
+        Game.GravityBodies.push(obj);
+        Game.GravityBodiesDict[name] = obj;
     }
 
     onPointerMove(pointer){

@@ -24,7 +24,7 @@
         <script src='js/gravity_game/main.js' type='module'></script>
 
         <template id="gravity-body">
-            <a href="" id="button" style="text-decoration: none !important;">
+            <a  href="#" id="button" style="text-decoration: none !important;">
                 <div class="panel panel-default" style="width: 420px; height: 70px; margin-bottom: 0px; background-color: #1a1a1a;border-color: black;" id="panel-id">
                     <div class="panel-body" style="color: #ffffff;" id="panel-id-body">
                         <img src="watcha looking at.jpg" alt="image" id="icon-pic" style="display:inline; width: 42px;height: 42px;">
@@ -51,26 +51,37 @@
             <div class="row" id="side-panel-attributes">
                 <div class="panel panel-default" style="width: 420px; height: 75px; margin-bottom: 0px; background-color: #3a3838;border-color: black; border-radius: 0;" id="panel-id">
                     <div class="panel-body" style="color: #ffffff;" id="panel-id-body">
-                        <img src="assets/GravityGame/earth.png" alt="image" id="icon-pic" style="width: 40px; height: 40px;" id="body-icon">
-                        <p style="display:inline; font-family: 'Courier New'; font-size: 19px; width: fit-content; margin-left: 15px;" id="body-name">
-                            Earth
+                        <img src="assets/GravityGame/earth.png" alt="image" id="icon-pic-attributes" style="width: 40px; height: 40px;" id="body-icon">
+                        <p style="display:inline; font-family: 'Courier New'; font-size: 22px; width: fit-content; margin-left: 27px;">
+                            <b id="body-name-attributes"></b>
                         </p>
+                        <a href="#" style="position: absolute; width: 40px; height: 40px; left: 320px">
+                            <img src="assets/GravityGame/home_button.png" alt="image" id="home-attributes" style="width: 40px; height: 40px; filter: invert(100%);" id="body-icon">
+                        </a>
                     </div>
                 </div>
-                <div class="panel panel-default" style="width: 420px; margin-bottom: 0px; background-color: #2c2c2c;border-color: black;" id="panel-id">
+                <div class="panel panel-default" style="width: 420px; margin-bottom: 0px; background-color: #2c2c2c;border-color: black;">
                     <div class="panel-body" style="color: #ffffff;" id="panel-id-body">
                         <form action="" style="margin-top: 10px;">
-                            <label for="starting_direction">Current Direction: </label>
-                            <input type="number" id="starting_direction" name="starting_direction"><br><br>
-                            <label for="starting_speed">Current Speed: </label>
-                            <input type="text" id="starting_speed" name="starting_speed"><br>
+                            <label for="direction">Direction: </label>
+                            <input type="number" id="direction-attributes" name="direction" step="any"><span style="margin-left:10px;">º</span><br><br>
+
+                            <label for="speed">Speed: </label>
+                            <input type="number" id="speed-attributes" name="speed" step="any"><span style="margin-left:10px;">m/s</span><br>
                             <hr>
-                            <label for="starting_direction">Starting Direction: </label>
-                            <input type="number" id="starting_direction" name="starting_direction"><br><br>
-                            <label for="starting_speed">Starting Speed: </label>
-                            <input type="text" id="starting_speed" name="starting_speed"><br>
+                            <label for="mass">Mass: </label>
+                            <input type="number" id="mass-attributes" name="mass" step="any"><span style="margin-left:10px;">kg</span><br><br>
+
+                            <label for="radius">Radius: </label>
+                            <input type="number" id="radius-attributes" name="radius" step="any"><span style="margin-left:10px;">m</span><br><br>
+
+                            <label for="icon">Icon Picture: </label>
+                            <select id="icon-list-attributes" name="icon" style="height: 30px; width: 100px; background-color: #272626; font-size: 15px; border-radius: 4px; border-color: black; border-width: 1.5px;">
+                                <option value="Earth">Earth</option>
+                                <option value="Sun">Sun</option>
+                            </select>
                             <hr>
-                          </form>
+                        </form>
                     </div>
                 </div>
 
