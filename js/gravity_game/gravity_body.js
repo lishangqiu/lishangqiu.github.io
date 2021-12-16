@@ -14,6 +14,7 @@ var middleY = SIZE_HEIGHT_SCREEN/2;
 var _idIndex = 0;
 export {resolutionTime};
 
+
 export default class GravityBody{
     // starting_pos(note coordinates start from the center as 0,0), starting_velocity, radius, (density or mass) in SI units
     constructor(options){
@@ -106,7 +107,8 @@ export default class GravityBody{
         this.sprite.displayWidth = radius * screenScale * radiusUpscale *2; // times two for diameter(scaling the image)
         this.sprite.scaleY = this.sprite.scaleX;
 
-        this.label = this.sceneObj.add.text(-1, -1, this.name, {color:"#00ffff"});
+        this.label = this.sceneObj.add.text(-1, -1, this.name, {color:"#3fc6f3"}); 
+        this.label.setFontSize(17);
         this.label.depth = 1;
     }
 
@@ -117,6 +119,14 @@ export default class GravityBody{
     deleteItem(){
         this.sprite.destroy(true);
         this.label.destroy(true);
+    }
+
+    setDirection(direction){
+        this.velocity = MDToVictor(this.velocity.magnitude(), direction);
+    }
+
+    setMagnitude(magnitude){
+        this.velocity = MDToVictor(magnitude, this.velocity.direction());
     }
 }
 

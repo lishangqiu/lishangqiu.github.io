@@ -77,12 +77,14 @@ export default class UIScene extends Phaser.Scene{
         var body = Game.GravityBodiesDict[this.updatesName];
         if (body.deleted){
             document.getElementById("icon-pic-attributes").src = name_link["_GraveStone"];
+            document.getElementById("body-name-attributes").innerText = "[DEAD] " + this.updatesName;
         }
         else{
             document.getElementById("icon-pic-attributes").src = name_link[body.sprite.texture.key];
+            document.getElementById("body-name-attributes").innerText = this.updatesName;
         }
 
-        document.getElementById("body-name-attributes").innerText = this.updatesName;
+        
         
         this.updateValue(document.getElementById("direction-attributes"), body.velocity.direction().toFixed(2));
         this.updateValue(document.getElementById("speed-attributes"), body.velocity.magnitude().toFixed(2));
@@ -90,6 +92,14 @@ export default class UIScene extends Phaser.Scene{
         this.updateValue(document.getElementById("mass-attributes"), body.mass);
 
         document.getElementById('icon-list-attributes').value = this.updatesName;
+    }
+
+    addListeners(){
+        var body = Game.GravityBodiesDict[this.updatesName];
+        document.getElementById("direction-attributes").addEventListener('change', (e) => (body.setDirection(e.target.value)));
+        document.getElementById("speed-attributes").addEventListener('change', (e) => (body.setMagnitude(e.target.value)));
+        document.getElementById("radius-attributes").addEventListener('change', (e) => (body.radius = e.target.value));
+        document.getElementById("mass-attributes").addEventListener('change', (e) => (body.mass = e.target.value));
     }
     
     switchSideBar(name){
@@ -104,6 +114,7 @@ export default class UIScene extends Phaser.Scene{
             document.getElementById("side-panel-id").style.display = "none";
             document.getElementById("side-panel-attributes").style.display = "";
             this.fillInAttributes();
+            this.addListeners();
         }
     }
 

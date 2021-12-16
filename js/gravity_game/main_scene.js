@@ -1,8 +1,13 @@
 import GravityBody from "./gravity_body.js"
 import {MIN_ZOOM, MAX_ZOOM, SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
 
+// pos vector, velocity vector, radius, mass, texture name
+var presets = {
+    "Sun": [new Victor(0, 0), new Victor(0, 0), 69.34e6, 1.989e30, "Sun"],
+    "Earth": [new Victor(149e9, 0), new Victor(0, -30000), 6.73e6, 5.972e24, "Earth"]
+}
 
-// this scene mostly handles the scaling of the screen and transformations by mouse
+
 export default class Game extends Phaser.Scene{
     startX = null;
     startY = null;
@@ -51,9 +56,10 @@ export default class Game extends Phaser.Scene{
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // create celestrial bodies
-        this.createBody(0, 0, 0, 0, 69.34e6, 1.989e30, "Sun", "Sun");
-        this.createBody(149e9, 0, 0, -30000, 6.73e6, 5.972e24, "Earth", "Earth");
-        this.createBody(-180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
+        //this.createBody(0, 0, 0, 0, 69.34e6, 1.989e30, "Sun", "Sun");
+        this.createBody("Sun");
+        this.createBody(null, 149e9, 0, 0, -30000, 6.73e6, 5.972e24, "Earth", "Earth");
+        this.createBody(null, -180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
 
     }
 
@@ -69,16 +75,33 @@ export default class Game extends Phaser.Scene{
         }
     }
 
-    createBody(posX, posY, velocityX, velocityY, radius, mass, textureName, name){
-        const config = {
-            starting_pos : new Victor(posX, posY),
-            starting_velocity : new Victor(velocityX, velocityY),
-            radius : radius,
-            mass : mass,
-            sceneObj : this,
-            textureName : textureName,
-            name: name,
-        };
+    createBody(preset_name, posX, posY, velocityX, velocityY, radius, mass, textureName, name){
+        var config;
+        if (preset_name == null){
+            config = {
+                starting_pos : new Victor(posX, posY),
+                starting_velocity : new Victor(velocityX, velocityY),
+                radius : radius,
+                mass : mass,
+                sceneObj : this,
+                textureName : textureName,
+                name: name,
+            };
+        }
+        else{
+            var name = preset_name;
+            console.log(presets[preset_name]);
+            config = {
+                starting_pos : presets[preset_name][0],
+                starting_velocity : presets[preset_name][1],
+                radius : presets[preset_name][2],
+                mass : presets[preset_name][3],
+                sceneObj : this,
+                textureName : presets[preset_name][4],
+                name: name,
+            };
+        }
+
 
         var obj = new GravityBody(config);
         Game.GravityBodies.push(obj);
