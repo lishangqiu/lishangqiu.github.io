@@ -7,7 +7,8 @@ import SidePanel from "./side_panel.js";
 
 const name_link = {
     "Earth": "assets/GravityGame/earth.png",
-    "Sun": "assets/GravityGame/sun.png"
+    "Sun": "assets/GravityGame/sun.png",
+    "_GraveStone": "assets/GravityGame/tombstone.png"
 }
 export {name_link};
 
@@ -68,16 +69,27 @@ export default class UIScene extends Phaser.Scene{
 
         if (this.updatesName != null && !Game.paused){
             console.log(Game.GravityBodiesDict[this.updatesName]);
-            document.getElementById("icon-pic-attributes").src = name_link[Game.GravityBodiesDict[this.updatesName].sprite.texture.key];
-            document.getElementById("body-name-attributes").innerText = this.updatesName;
-            
-            this.updateValue(document.getElementById("direction-attributes"), Game.GravityBodiesDict[this.updatesName].velocity.direction().toFixed(2));
-            this.updateValue(document.getElementById("speed-attributes"), Game.GravityBodiesDict[this.updatesName].velocity.magnitude().toFixed(2));
-            this.updateValue(document.getElementById("radius-attributes"), Game.GravityBodiesDict[this.updatesName].radius);
-            this.updateValue(document.getElementById("mass-attributes"), Game.GravityBodiesDict[this.updatesName].mass);
-
-            document.getElementById('icon-list-attributes').value = this.updatesName;
+            this.fillInAttributes();
         }
+    }
+
+    fillInAttributes(){
+        var body = Game.GravityBodiesDict[this.updatesName];
+        if (body.deleted){
+            document.getElementById("icon-pic-attributes").src = name_link["_GraveStone"];
+        }
+        else{
+            document.getElementById("icon-pic-attributes").src = name_link[body.sprite.texture.key];
+        }
+
+        document.getElementById("body-name-attributes").innerText = this.updatesName;
+        
+        this.updateValue(document.getElementById("direction-attributes"), body.velocity.direction().toFixed(2));
+        this.updateValue(document.getElementById("speed-attributes"), body.velocity.magnitude().toFixed(2));
+        this.updateValue(document.getElementById("radius-attributes"), body.radius);
+        this.updateValue(document.getElementById("mass-attributes"), body.mass);
+
+        document.getElementById('icon-list-attributes').value = this.updatesName;
     }
     
     switchSideBar(name){
@@ -91,6 +103,7 @@ export default class UIScene extends Phaser.Scene{
             this.updatesName = name;
             document.getElementById("side-panel-id").style.display = "none";
             document.getElementById("side-panel-attributes").style.display = "";
+            this.fillInAttributes();
         }
     }
 
