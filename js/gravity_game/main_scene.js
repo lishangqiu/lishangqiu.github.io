@@ -58,8 +58,8 @@ export default class Game extends Phaser.Scene{
         // create celestrial bodies
         //this.createBody(0, 0, 0, 0, 69.34e6, 1.989e30, "Sun", "Sun");
         this.createBody("Sun");
-        this.createBody(null, 149e9, 0, 0, -30000, 6.73e6, 5.972e24, "Earth", "Earth");
-        this.createBody(null, -180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
+        this.createBody("Earth");
+        this.createBody("Custom", -180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
 
     }
 
@@ -77,7 +77,7 @@ export default class Game extends Phaser.Scene{
 
     createBody(preset_name, posX, posY, velocityX, velocityY, radius, mass, textureName, name){
         var config;
-        if (preset_name == null){
+        if (preset_name == "Custom"){
             config = {
                 starting_pos : new Victor(posX, posY),
                 starting_velocity : new Victor(velocityX, velocityY),
@@ -86,6 +86,7 @@ export default class Game extends Phaser.Scene{
                 sceneObj : this,
                 textureName : textureName,
                 name: name,
+                preset_name: preset_name,
             };
         }
         else{
@@ -99,6 +100,7 @@ export default class Game extends Phaser.Scene{
                 sceneObj : this,
                 textureName : presets[preset_name][4],
                 name: name,
+                preset_name: preset_name,
             };
         }
 

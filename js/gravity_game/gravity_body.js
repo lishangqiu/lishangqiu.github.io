@@ -38,7 +38,8 @@ export default class GravityBody{
         this.pathPoints = [];
         this.lastPoint = this.pos.clone().multiplyScalar(screenScale);
         this.name = options.name;
-
+        console.log(options.preset_name);
+        this.preset = options.preset_name;
         this.initDraw(this.radius, options.textureName);
     }
 
@@ -127,6 +128,10 @@ export default class GravityBody{
 
     setMagnitude(magnitude){
         this.velocity = MDToVictor(magnitude, this.velocity.direction());
+    }
+
+    setRadius(radius){
+        this.sprite.displayWidth = radius * screenScale * radiusUpscale *2;
     }
 }
 

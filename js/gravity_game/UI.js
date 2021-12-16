@@ -4,6 +4,7 @@ import {resolutionTime} from "./gravity_body.js"
 import {SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from "./config.js"
 import Game from "./main_scene.js"
 import SidePanel from "./side_panel.js";
+import SidePanelAttribute from "./side_panel_attributes.js"
 
 const name_link = {
     "Earth": "assets/GravityGame/earth.png",
@@ -18,6 +19,9 @@ export default class UIScene extends Phaser.Scene{
         this.lastTime = new Date().getTime();
         this.timeSpent = 0; // in seconds
         this.sidePanelObj = new SidePanel();
+        this.attributesPanelObj = new SidePanelAttribute();
+
+        this.skipCountAttributes = 0;
     }
 
     preload(){
@@ -28,6 +32,7 @@ export default class UIScene extends Phaser.Scene{
         UIScene.minusImg = this.load.image("minus_button", "assets/GravityGame/minus_button.png");
 
         UIScene.buttonImg = this.load.image("button_image", "assets/GravityGame/button.png");
+        UIScene.playButtonImg = this.load.image("play_button", "assets/GravityGame/play_button.png");
     }
 
     create(){
@@ -48,6 +53,10 @@ export default class UIScene extends Phaser.Scene{
         this.sidePanelObj.create(this);
         this.switchSideBar("main");
 
+        /*var playButton = this.add.sprite(500, 500, "play_button");
+        playButton.displayWidth = 64; // times two for diameter(scaling the image)
+        playButton.scaleY = playButton.scaleX;*/
+    
         document.getElementById("home-attributes").onclick = ()=>{this.switchSideBar("main");}
     }
 
@@ -60,6 +69,7 @@ export default class UIScene extends Phaser.Scene{
         //this.simSpeedText.text = "Time Scale: Each second in simulation = " + 
         //(resolutionTime*GravityBody.simTimes*game.loop.actualFps/3600).toFixed(3) + " hours in real life(its updating to match your framerate)";
 
+
         if (!Game.paused){
             this.timeSpent += resolutionTime*GravityBody.simTimes;
         }
@@ -68,39 +78,17 @@ export default class UIScene extends Phaser.Scene{
         this.sidePanelObj.update();
 
         if (this.updatesName != null && !Game.paused){
-            console.log(Game.GravityBodiesDict[this.updatesName]);
-            this.fillInAttributes();
+            if (this.skipCountAttributes > 2){ // change later, 5 constant
+                this.attributesPanelObj.update();
+                this.skipCountAttributes = 0;
+            }
+            this.skipCountAttributes++;
         }
     }
 
-    fillInAttributes(){
-        var body = Game.GravityBodiesDict[this.updatesName];
-        if (body.deleted){
-            document.getElementById("icon-pic-attributes").src = name_link["_GraveStone"];
-            document.getElementById("body-name-attributes").innerText = "[DEAD] " + this.updatesName;
-        }
-        else{
-            document.getElementById("icon-pic-attributes").src = name_link[body.sprite.texture.key];
-            document.getElementById("body-name-attributes").innerText = this.updatesName;
-        }
 
-        
-        
-        this.updateValue(document.getElementById("direction-attributes"), body.velocity.direction().toFixed(2));
-        this.updateValue(document.getElementById("speed-attributes"), body.velocity.magnitude().toFixed(2));
-        this.updateValue(document.getElementById("radius-attributes"), body.radius);
-        this.updateValue(document.getElementById("mass-attributes"), body.mass);
 
-        document.getElementById('icon-list-attributes').value = this.updatesName;
-    }
 
-    addListeners(){
-        var body = Game.GravityBodiesDict[this.updatesName];
-        document.getElementById("direction-attributes").addEventListener('change', (e) => (body.setDirection(e.target.value)));
-        document.getElementById("speed-attributes").addEventListener('change', (e) => (body.setMagnitude(e.target.value)));
-        document.getElementById("radius-attributes").addEventListener('change', (e) => (body.radius = e.target.value));
-        document.getElementById("mass-attributes").addEventListener('change', (e) => (body.mass = e.target.value));
-    }
     
     switchSideBar(name){
         console.log(name);
@@ -113,14 +101,9 @@ export default class UIScene extends Phaser.Scene{
             this.updatesName = name;
             document.getElementById("side-panel-id").style.display = "none";
             document.getElementById("side-panel-attributes").style.display = "";
-            this.fillInAttributes();
-            this.addListeners();
+            this.attributesPanelObj.updateBody(name);
         }
     }
 
-    updateValue(element, text){
-        if (!(element === document.activeElement)){
-            element.value = text;
-        }
-    }
+
 }
