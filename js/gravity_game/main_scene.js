@@ -16,7 +16,7 @@ export default class Game extends Phaser.Scene{
         super('game');
         Game.GravityBodies = [];
         Game.GravityBodiesDict = {};
-        Game.paused = false;
+        Game.paused = true;
     }
 
     preload(){
@@ -55,12 +55,14 @@ export default class Game extends Phaser.Scene{
         this.input.on('pointermove', this.onPointerMove, this);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        // create celestrial bodies
-        //this.createBody(0, 0, 0, 0, 69.34e6, 1.989e30, "Sun", "Sun");
         this.createBody("Sun");
         this.createBody("Earth");
         this.createBody("Custom", -180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
 
+        // init
+        Game.GravityBodies.forEach(function(item, index, array) {
+            item.drawNewPos();
+        });
     }
 
     update(){

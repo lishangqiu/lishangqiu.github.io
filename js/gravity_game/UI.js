@@ -33,6 +33,7 @@ export default class UIScene extends Phaser.Scene{
 
         UIScene.buttonImg = this.load.image("button_image", "assets/GravityGame/button.png");
         UIScene.playButtonImg = this.load.image("play_button", "assets/GravityGame/play_button.png");
+        UIScene.playButtonImg = this.load.image("pause_button", "assets/GravityGame/pause_button.png");
     }
 
     create(){
@@ -49,13 +50,14 @@ export default class UIScene extends Phaser.Scene{
         this.simSpeedSlider = new SliderUI(30, 150, 240 , this, 0xD9DDDC);
         this.add.text(18, 230, "Simulation\n  Speed");
 
-        this.earthDaysText = this.add.text(30, 900, "Earth days").setFontSize(20);
+        this.earthDaysText = this.add.text(850, 1030, "Earth days").setOrigin(0.5, 0.5).setFontSize(23);
         this.sidePanelObj.create(this);
         this.switchSideBar("main");
 
-        /*var playButton = this.add.sprite(500, 500, "play_button");
-        playButton.displayWidth = 64; // times two for diameter(scaling the image)
-        playButton.scaleY = playButton.scaleX;*/
+        this.playButton = this.add.sprite(850, 950, "play_button").setOrigin(0.5, 0.5);
+        this.playButton.displayWidth = 64; // times two for diameter(scaling the image)
+        this.playButton.scaleY = this.playButton.scaleX;
+        this.playButton.setInteractive({useHandCursor: true}).on("pointerdown", () => this.playClicked()).on("pointerover", () => this.playButton.setTint(0xafafaf)).on("pointerout", () => this.playButton.setTint(0xffffff));
     
         document.getElementById("home-attributes").onclick = ()=>{this.switchSideBar("main");}
     }
@@ -84,10 +86,14 @@ export default class UIScene extends Phaser.Scene{
             }
             this.skipCountAttributes++;
         }
+
+        if (Game.paused){
+            this.playButton.setTexture("pause_button");
+        }
+        else{
+            this.playButton.setTexture("play_button");
+        }
     }
-
-
-
 
     
     switchSideBar(name){
@@ -105,5 +111,7 @@ export default class UIScene extends Phaser.Scene{
         }
     }
 
-
+    playClicked(){
+        Game.paused = !Game.paused;
+    }
 }
