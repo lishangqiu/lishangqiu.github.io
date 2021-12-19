@@ -50,11 +50,11 @@ export default class UIScene extends Phaser.Scene{
         this.simSpeedSlider = new SliderUI(30, 150, 240 , this, 0xD9DDDC);
         this.add.text(18, 230, "Simulation\n  Speed");
 
-        this.earthDaysText = this.add.text(850, 1030, "Earth days").setOrigin(0.5, 0.5).setFontSize(23);
+        this.earthDaysText = this.add.text(780, 1030, "Earth days").setOrigin(0.5, 0.5).setFontSize(23);
         this.sidePanelObj.create(this);
         this.switchSideBar("main");
 
-        this.playButton = this.add.sprite(850, 950, "play_button").setOrigin(0.5, 0.5);
+        this.playButton = this.add.sprite(780, 970, "play_button").setOrigin(0.5, 0.5);
         this.playButton.displayWidth = 64; // times two for diameter(scaling the image)
         this.playButton.scaleY = this.playButton.scaleX;
         this.playButton.setInteractive({useHandCursor: true}).on("pointerdown", () => this.playClicked()).on("pointerover", () => this.playButton.setTint(0xafafaf)).on("pointerout", () => this.playButton.setTint(0xffffff));
@@ -63,10 +63,9 @@ export default class UIScene extends Phaser.Scene{
     }
 
     update(){
-        var deltaTime = ((new Date().getTime() - this.lastTime) / 1000);
         this.lastTime = new Date().getTime();
         // set the amount of times of simulation
-        GravityBody.simTimes = Math.round(((1-this.simSpeedSlider.img.slider.value) * 60) + 8);
+        GravityBody.simTimes = Math.round(((1-this.simSpeedSlider.sliderImg.slider.value) * 100) + 8);
 
         //this.simSpeedText.text = "Time Scale: Each second in simulation = " + 
         //(resolutionTime*GravityBody.simTimes*game.loop.actualFps/3600).toFixed(3) + " hours in real life(its updating to match your framerate)";
@@ -80,7 +79,8 @@ export default class UIScene extends Phaser.Scene{
         this.sidePanelObj.update();
 
         if (this.updatesName != null && !Game.paused){
-            if (this.skipCountAttributes > 2){ // change later, 5 constant
+            // skip every x frame so that the attributes don't update so fast
+            if (this.skipCountAttributes > 2){ // change later
                 this.attributesPanelObj.update();
                 this.skipCountAttributes = 0;
             }
@@ -88,16 +88,17 @@ export default class UIScene extends Phaser.Scene{
         }
 
         if (Game.paused){
-            this.playButton.setTexture("pause_button");
-        }
-        else{
             this.playButton.setTexture("play_button");
         }
+        else{
+            this.playButton.setTexture("pause_button");
+        }
+
+        this.input.on('pointerdown', () => {clearSelection();}, this);
     }
 
     
     switchSideBar(name){
-        console.log(name);
         if (name=="main"){
             document.getElementById("side-panel-id").style.display = "";
             document.getElementById("side-panel-attributes").style.display = "none";
@@ -113,5 +114,25 @@ export default class UIScene extends Phaser.Scene{
 
     playClicked(){
         Game.paused = !Game.paused;
+    }
+}
+
+function clearSelection() {
+    var sel;
+    if ( (sel = document.selection) && sel.empty ) {
+        sel.empty();
+    } else {
+        if (window.getSelection) {
+            window.getSelection().removeAllRanges();
+        }
+        var activeEl = document.activeElement;
+        if (activeEl) {
+            var tagName = activeEl.nodeName.toLowerCase();
+            if ( tagName == "textarea" ||
+                    (tagName == "input" && activeEl.type == "text") ) {
+                // Collapse the selection to the end
+                activeEl.selectionStart = activeEl.selectionEnd;
+            }
+        }
     }
 }

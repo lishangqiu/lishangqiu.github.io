@@ -2,6 +2,25 @@ import Game from "./main_scene.js"
 import { name_link } from "./UI.js";
 
 export default class SidePanelAttribute{
+    constructor(){
+        this.posXObj = new NumberAttributeObj(document.getElementById("posX-attributes"), 
+        () => {return this.body.pos.x.toFixed(2);}, (val) => {this.body.setPosX(val);}, 0.001);
+
+        this.posYObj = new NumberAttributeObj(document.getElementById("posY-attributes"), 
+        () => {return this.body.pos.y.toFixed(2);}, (val) => {this.body.setPosY(val);}, 0.001);
+
+        this.directionObj = new NumberAttributeObj(document.getElementById("direction-attributes"), 
+        () => {return this.body.velocity.direction().toFixed(2);}, (val) => {this.body.setDirection(val)}, 1);
+
+        this.speedObj = new NumberAttributeObj(document.getElementById("speed-attributes"), 
+        () => {return this.body.velocity.magnitude().toFixed(2);}, (val) => {this.body.setMagnitude(val)}, 1);
+
+        this.radiusObj = new NumberAttributeObj(document.getElementById("radius-attributes"), 
+        () => {return this.body.radius}, (val) => {this.body.setRadius(val)}, 1);
+
+        this.massObj = new NumberAttributeObj(document.getElementById("mass-attributes"), 
+        () => {return this.body.mass}, (val) => {this.body.mass = val}, 1);
+    }
 
     updateBody(bodyName){
         this.updatesName = bodyName;
@@ -15,17 +34,16 @@ export default class SidePanelAttribute{
     }
 
     addListeners(){
-        document.getElementById("direction-attributes").addEventListener('change', (e) => (this.body.setDirection(e.target.value)));
-        document.getElementById("speed-attributes").addEventListener('change', (e) => (this.body.setMagnitude(e.target.value)));
-        document.getElementById("radius-attributes").addEventListener('change', (e) => (this.body.radius = e.target.value));
         document.getElementById("mass-attributes").addEventListener('change', (e) => (this.body.mass = e.target.value));
+
+        this.posXObj.addListeners();
+        this.posYObj.addListeners();
+        this.directionObj.addListeners();
+        this.speedObj.addListeners();
+        this.radiusObj.addListeners();
+        this.massObj.addListeners();
     }
 
-    updateValue(element, text){
-        if (!(element === document.activeElement)){
-            element.value = text;
-        }
-    }
 
     fillInAttributes(){
         if (this.body.deleted){
@@ -37,12 +55,48 @@ export default class SidePanelAttribute{
             document.getElementById("body-name-attributes").innerText = this.updatesName;
         }
         
-        this.updateValue(document.getElementById("preset-list-attributes"), this.body.preset);
-        this.updateValue(document.getElementById("direction-attributes"), this.body.velocity.direction().toFixed(2));
-        this.updateValue(document.getElementById("speed-attributes"), this.body.velocity.magnitude().toFixed(2));
-        this.updateValue(document.getElementById("radius-attributes"), this.body.radius);
-        this.updateValue(document.getElementById("mass-attributes"), this.body.mass);
+        this.updateValue(document.getElementById("preset-list-attributes"), this.body.preset); 
 
-        document.getElementById('icon-list-attributes').value = this.updatesName;
+        document.getElementById('icon-list-attributes').value = this.body.sprite.texture.key;
+
+        this.posXObj.fillInAttributes();
+        this.posYObj.fillInAttributes();
+        this.directionObj.fillInAttributes();
+        this.speedObj.fillInAttributes(); 
+        this.radiusObj.fillInAttributes();
+        this.massObj.fillInAttributes();
+    }
+
+    updateValue(element, text){
+        element.value = text;
+
+        if (element === document.activeElement){
+            Game.puased2 = true;
+        }
+    } 
+}
+
+class NumberAttributeObj{
+    constructor(element, getFunc, setFunc, unitMultiply){
+        this.element = element;
+        this.getFunc = getFunc;
+        this.setFunc = setFunc;
+        this.unitMultiply = unitMultiply;
+    }
+
+    fillInAttributes(){
+        this.updateValue(this.element, (this.getFunc()*this.unitMultiply).toFixed(2));
+    }
+
+    addListeners(){
+        this.element.addEventListener('change', (e) => (this.setFunc(e.target.value/this.unitMultiply)));
+    }
+
+    updateValue(element, text){
+        element.value = text;
+
+        if (element === document.activeElement){
+            Game.setPaused(true);
+        }
     }
 }

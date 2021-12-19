@@ -1,4 +1,5 @@
 import Game from "./main_scene.js";
+import {game} from "./main.js"
 import { SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
 
 const gravitationalConstant = 6.67428e-11;
@@ -38,7 +39,6 @@ export default class GravityBody{
         this.pathPoints = [];
         this.lastPoint = this.pos.clone().multiplyScalar(screenScale);
         this.name = options.name;
-        console.log(options.preset_name);
         this.preset = options.preset_name;
         this.initDraw(this.radius, options.textureName);
     }
@@ -84,9 +84,11 @@ export default class GravityBody{
         if (
             (Math.abs(((this.pos.x * screenScale) - this.lastPoint.x)) > 1.5) ||
             (Math.abs(((this.pos.y * screenScale) - this.lastPoint.y)) > 1.5)){
-            this.sceneObj.add.line(0, 0, this.lastPoint.x + middleX, this.lastPoint.y + middleY,
-                (this.pos.x * screenScale) + middleX, (this.pos.y * screenScale) + middleY, 0xf8f9f0);
-            this.lastPoint = this.pos.clone().multiplyScalar(screenScale);
+                //this.sceneObj.add.line(0, 0, this.lastPoint.x + middleX, this.lastPoint.y + middleY,
+                    //(this.pos.x * screenScale) + middleX, (this.pos.y * screenScale) + middleY, 0xf8f9f0);
+                //this.sceneObj.add.circle((this.pos.x * screenScale) + middleX, (this.pos.y * screenScale) + middleY, 1, 0xf8f9f0);
+                Game.gra.fillPoint((this.pos.x * screenScale) + middleX, (this.pos.y * screenScale) + middleY, 2);
+                this.lastPoint = this.pos.clone().multiplyScalar(screenScale);
         }
 
         return;
@@ -96,7 +98,10 @@ export default class GravityBody{
         for (let i=0;i<GravityBody.simTimes;i++){
             this.simGravity();
         }
+        this.drawObjPos();
+    }
 
+    drawObjPos(){
         this.sprite.setPosition(this.pos.x * screenScale + middleX, this.pos.y * screenScale + middleY);
 
         var diplacements = this.getAngleDisplacements(this.radius * screenScale * radiusUpscale);
@@ -104,9 +109,13 @@ export default class GravityBody{
     }
 
     initDraw(radius, textureName){
-        this.sprite = this.sceneObj.add.sprite(-1, -1, textureName);
+        this.sprite = this.sceneObj.add.sprite(-1, -1, textureName).setInteractive({cursor: 'pointer'});
         this.sprite.displayWidth = radius * screenScale * radiusUpscale *2; // times two for diameter(scaling the image)
         this.sprite.scaleY = this.sprite.scaleX;
+
+        this.sprite.on('pointerdown', () => {this.sceneObj.scene.get("UIScene").switchSideBar(this.name)});
+        this.sprite.on('pointerout', () => {this.sprite.clearTint()});
+        this.sprite.on('pointerover', () => {this.sprite.setTint(0xa5a5a5 );});
 
         this.label = this.sceneObj.add.text(-1, -1, this.name, {color:"#3fc6f3"}); 
         this.label.setFontSize(17);
@@ -131,7 +140,18 @@ export default class GravityBody{
     }
 
     setRadius(radius){
+        this.radius = radius;
         this.sprite.displayWidth = radius * screenScale * radiusUpscale *2;
+    }
+
+    setPosX(x){
+        this.pos.x = x;
+        this.drawObjPos();
+    }
+
+    setPosY(y){
+        this.pos.y = y;
+        this.drawObjPos();
     }
 }
 

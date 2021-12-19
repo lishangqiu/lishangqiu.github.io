@@ -1,5 +1,6 @@
 import GravityBody from "./gravity_body.js"
 import {MIN_ZOOM, MAX_ZOOM, SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
+import { game } from "./main.js";
 
 // pos vector, velocity vector, radius, mass, texture name
 var presets = {
@@ -63,18 +64,22 @@ export default class Game extends Phaser.Scene{
         Game.GravityBodies.forEach(function(item, index, array) {
             item.drawNewPos();
         });
+
+        Game.gra = this.add.graphics();
+        Game.gra.lineStyle(5, 0xFF00FF, 1.0);
+        Game.gra.fillStyle(0xFFFFFF, 1.0);
     }
 
     update(){
         if (this.input.keyboard.checkDown(this.keySpace, 800)){
             Game.paused = !Game.paused;
-            console.log(Game.paused);
         }
         if (!Game.paused){
             Game.GravityBodies.forEach(function(item, index, array) {
                 item.drawNewPos();
             });
         }
+        
     }
 
     createBody(preset_name, posX, posY, velocityX, velocityY, radius, mass, textureName, name){
@@ -93,7 +98,6 @@ export default class Game extends Phaser.Scene{
         }
         else{
             var name = preset_name;
-            console.log(presets[preset_name]);
             config = {
                 starting_pos : presets[preset_name][0],
                 starting_velocity : presets[preset_name][1],
@@ -130,4 +134,8 @@ export default class Game extends Phaser.Scene{
             }
         }
     }
+}
+
+Game.setPaused = function(pause){
+    Game.paused = pause;
 }

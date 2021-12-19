@@ -9,25 +9,29 @@ const imageTint = 0x999999;
 
 export default class SliderUI{
     constructor(posX, posY, length, sceneObj, color){
-        this.img = sceneObj.add.circle(posX*SCREEN_SCALE_INCREASE, posY*SCREEN_SCALE_INCREASE, 10, 0xffffff);
-        this.img.depth = 2;
+        this.sliderImg = sceneObj.add.circle(posX*SCREEN_SCALE_INCREASE, posY*SCREEN_SCALE_INCREASE, 10, 0xffffff).setInteractive({cursor: 'pointer'});;
+        this.sliderImg.depth = 2;
+        console.log(this.sliderImg);
+        this.sliderImg.on('pointerout', () => {this.sliderImg.fillColor = 0xffffff;});
+        this.sliderImg.on('pointerover', () => {this.sliderImg.fillColor = 0xa5a5a5;});
+
 
         sceneObj.add.graphics()
         .lineStyle(2*SCREEN_SCALE_INCREASE, color, 1)
-        .strokePoints([{x: this.img.x, y: this.img.y - lineLengthOffset}, {x: this.img.x, y: this.img.y+length*SCREEN_SCALE_INCREASE+lineLengthOffset*2}]);
+        .strokePoints([{x: this.sliderImg.x, y: this.sliderImg.y - lineLengthOffset}, {x: this.sliderImg.x, y: this.sliderImg.y+length*SCREEN_SCALE_INCREASE+lineLengthOffset*2}]);
 
-        this.img.slider = sceneObj.plugins.get('rexsliderplugin').add(this.img, {
+        this.sliderImg.slider = sceneObj.plugins.get('rexsliderplugin').add(this.sliderImg, {
             endPoints: [{
-                x: this.img.x,
-                y: this.img.y,
+                x: this.sliderImg.x,
+                y: this.sliderImg.y,
             },
             {
-                x: this.img.x,
-                y: this.img.y+length*SCREEN_SCALE_INCREASE,
+                x: this.sliderImg.x,
+                y: this.sliderImg.y+length*SCREEN_SCALE_INCREASE,
             }],
             value: 1
         });
-        //this.img.depth = 1*SCREEN_SCALE_INCREASE;
+        //this.sliderImg.depth = 1*SCREEN_SCALE_INCREASE;
 
         this.plusImage = sceneObj.add.image(posX*SCREEN_SCALE_INCREASE, posY*SCREEN_SCALE_INCREASE - plusMinusOffset, "plus_button");
         this.plusImage.setScale(plusScale, plusScale);
@@ -40,12 +44,12 @@ export default class SliderUI{
     }
 
     onPlus(){
-        console.log(this.img.slider.value);
-        this.img.slider.value -= 0.01;
+        console.log(this.sliderImg.slider.value);
+        this.sliderImg.slider.value -= 0.01;
     }
 
     onMinus(){
-        this.img.slider.value += 0.01;
+        this.sliderImg.slider.value += 0.01;
     }
 
     setTint(imageObj, tint){

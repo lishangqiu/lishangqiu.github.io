@@ -1,5 +1,11 @@
 #panel-id-body input{
-    width: 170px; height: 27px; background-color: #272626; border-color: black; border-width: 1.5px; border-radius: 4px;
+    width: 170px; 
+    height: 29px; 
+    background-color: #272626; 
+    border-color: black; 
+    border-width: 1.5px; 
+    border-radius: 4px;
+    font-size: 15px;
 }
 
 #panel-id-body label{
