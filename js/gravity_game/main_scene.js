@@ -113,7 +113,7 @@ export default class Game extends Phaser.Scene{
 
         var obj = new GravityBody(config);
         Game.GravityBodies.push(obj);
-        Game.GravityBodiesDict[name] = obj;
+        Game.GravityBodiesDict[obj.id] = obj;
     }
 
     onPointerMove(pointer){

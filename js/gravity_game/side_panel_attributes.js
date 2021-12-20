@@ -23,11 +23,12 @@ export default class SidePanelAttribute{
         () => {return this.body.mass}, (val) => {this.body.mass = val}, 1);
     }
 
-    updateBody(bodyName){
-        this.updatesName = bodyName;
-        this.body = Game.GravityBodiesDict[bodyName];
+    updateBody(bodyId){
+        this.bodyId = bodyId;
+        this.body = Game.GravityBodiesDict[bodyId];
         this.fillInAttributes();
         this.addListeners();
+        document.getElementById("body-name-attributes").value = this.body.name;
     }
 
     update(){
@@ -44,7 +45,7 @@ export default class SidePanelAttribute{
     }
 
     addListeners(){
-        document.getElementById("mass-attributes").addEventListener('change', (e) => (this.body.mass = e.target.value));
+        //document.getElementById("body-name-attributes")
 
         this.posXObj.addListeners();
         this.posYObj.addListeners();
@@ -58,13 +59,13 @@ export default class SidePanelAttribute{
     fillInAttributes(){
         if (this.body.deleted){
             document.getElementById("icon-pic-attributes").src = name_link["_GraveStone"];
-            document.getElementById("body-name-attributes").innerText = "[DEAD] " + this.updatesName;
+            document.getElementById("body-name-attributes").value  = "[DEAD] " + this.body.name;
+            document.getElementById("body-name-attributes").disabled = true;
         }
         else{
             document.getElementById("icon-pic-attributes").src = name_link[this.body.sprite.texture.key];
-            document.getElementById("body-name-attributes").innerText = this.updatesName;
         }
-        
+        document.getElementById("body-name-attributes").addEventListener('change', (e) => (this.body.updateName(e.target.value)));
         document.getElementById("preset-list-attributes").value = this.body.preset; 
 
         document.getElementById('icon-list-attributes').value = this.body.sprite.texture.key;
@@ -100,6 +101,7 @@ class NumberAttributeObj{
             if (game.input.activePointer.isDown){
                 if (game.input.activePointer.x < 1500){
                     this.element.blur();
+
                 }
             }
         }

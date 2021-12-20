@@ -6,6 +6,7 @@ const iconSize = 64;
 export default class SidePanel{
     constructor(){
         this.buttons = [];
+        this.buttonsID = {};
     }
 
     preload(){
@@ -19,7 +20,9 @@ export default class SidePanel{
         sceneObj.add.line(0,0,1500,0,1500,2160,0xffffff);
 
         for (let i = 0; i < Game.GravityBodies.length; i++){
-            this.buttons.push(new SidePanelButton(Game.GravityBodies[i].name, sceneObj));
+            var obj = new SidePanelButton(Game.GravityBodies[i].id, sceneObj);
+            this.buttons.push(obj);
+            this.buttonsID[Game.GravityBodies[i].id] = obj;
         }
 
         var dom = sceneObj.add.dom(1517, 0, "#sidepanel");
@@ -43,15 +46,18 @@ export default class SidePanel{
 
 
 class SidePanelButton{
-    constructor(bodyName, sceneObj){
-        this.addTemplate(bodyName, Game.GravityBodiesDict[bodyName].sprite.texture.key, sceneObj);
-        this.id = Game.GravityBodiesDict[bodyName].id;
+    constructor(bodyId, sceneObj){
+        this.addTemplate(bodyId, Game.GravityBodiesDict[bodyId].sprite.texture.key, sceneObj);
+        this.id = bodyId;
     }
 
-    addTemplate(bodyName, imageName, sceneObj){
+    addTemplate(bodyId, imageName, sceneObj){
         var template = document.getElementById("gravity-body");
         var clon = template.content.cloneNode(true);
-        clon.getElementById("name").textContent = bodyName;
+
+        clon.getElementById("name").textContent = Game.GravityBodiesDict[bodyId].name;
+        this.nameElement = clon.getElementById("name");
+
         clon.getElementById("icon-pic").src = name_link[imageName];
         this.icon_pic = clon.getElementById("icon-pic");
 
@@ -70,19 +76,19 @@ class SidePanelButton{
                 panel.style.backgroundColor = "#1a1a1a";
             }
         };
-        clon.getElementById("button").onclick = function() {sceneObj.switchSideBar(bodyName)};
+        clon.getElementById("button").onclick = function() {sceneObj.switchSideBar(bodyId)};
         clon.getElementById("delete_button").onclick = () => {
             Game.GravityBodies.forEach(function(item, index, array){
-                if (item.id == (Game.GravityBodiesDict[bodyName].id)){
+                if (item.id == bodyId){
                     Game.GravityBodies[index].deleteItem();
                     Game.GravityBodies.splice(index, 1);
                     document.getElementById("side-button-id-"+index).remove();
                 }
             });
-            delete Game.GravityBodiesDict[bodyName]; 
+            delete Game.GravityBodiesDict[bodyId]; 
             this.deleted = true;
         };
-        clon.children[0].id = "side-button-id-"+Game.GravityBodiesDict[bodyName].id;
+        clon.children[0].id = "side-button-id-"+Game.GravityBodiesDict[bodyId].id;
         document.getElementById("side-panel-id").appendChild(clon);
     }
     
@@ -94,5 +100,9 @@ class SidePanelButton{
         this.dead = true;
         this.panel.style.backgroundColor = "#000000";
         this.icon_pic.src = "assets/GravityGame/tombstone.png";
+    }
+
+    updateName(name){
+        this.nameElement.textContent = name;
     }
 }

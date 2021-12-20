@@ -113,7 +113,7 @@ export default class GravityBody{
         this.sprite.displayWidth = radius * screenScale * radiusUpscale *2; // times two for diameter(scaling the image)
         this.sprite.scaleY = this.sprite.scaleX;
 
-        this.sprite.on('pointerdown', () => {this.sceneObj.scene.get("UIScene").switchSideBar(this.name)});
+        this.sprite.on('pointerdown', () => {this.sceneObj.scene.get("UIScene").switchSideBar(this.id)});
         this.sprite.on('pointerout', () => {this.sprite.clearTint()});
         this.sprite.on('pointerover', () => {this.sprite.setTint(0xa5a5a5 );});
 
@@ -152,6 +152,12 @@ export default class GravityBody{
     setPosY(y){
         this.pos.y = y;
         this.drawObjPos();
+    }
+
+    updateName(name){
+        this.name = name;
+        this.label.setText(name);
+        game.scene.getScene("UIScene").sidePanelObj.buttonsID[this.id].updateName(name);
     }
 }
 
