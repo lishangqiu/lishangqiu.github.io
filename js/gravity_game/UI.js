@@ -5,6 +5,7 @@ import {SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from "./c
 import Game from "./main_scene.js"
 import SidePanel from "./side_panel.js";
 import SidePanelAttribute from "./side_panel_attributes.js"
+import {game} from "./main.js"
 
 const name_link = {
     "Earth": "assets/GravityGame/earth.png",
@@ -22,6 +23,7 @@ export default class UIScene extends Phaser.Scene{
         this.attributesPanelObj = new SidePanelAttribute();
 
         this.skipCountAttributes = 0;
+        document.fullscreenEnabled = true;
     }
 
     preload(){
@@ -34,13 +36,30 @@ export default class UIScene extends Phaser.Scene{
         UIScene.buttonImg = this.load.image("button_image", "assets/GravityGame/button.png");
         UIScene.playButtonImg = this.load.image("play_button", "assets/GravityGame/play_button.png");
         UIScene.playButtonImg = this.load.image("pause_button", "assets/GravityGame/pause_button.png");
+
+        UIScene.fullScreenButton = this.load.image("fullscreen_button", "assets/GravityGame/FullScreen.png");
+        UIScene.unFullScreenButton = this.load.image("unfullscreen_button", "assets/GravityGame/UnFullScreen.png");
     }
 
     create(){
         this.cameras.main.setZoom(1);
-
+        this.scale.fullscreenTarget = document.getElementById("game");
         this.add.text(20, 10, 
             "Scale: 5x10^10 meters/pixel\n\nRadius are upscaled by: 500x for visibility\n");
+
+        this.fullScreenButton = this.add.sprite(1400, 60, "fullscreen_button").setOrigin(0.5, 0.5).setInteractive({useHandCursor: true});
+        this.fullScreenButton.displayWidth = 32; // times two for diameter(scaling the image)
+        this.fullScreenButton.scaleY = this.fullScreenButton.scaleX;
+        this.fullScreenButton.on("pointerover", () => this.fullScreenButton.setTint(0xafafaf)).on("pointerout", () => this.fullScreenButton.setTint(0xffffff));
+        this.fullScreenButton.on('pointerdown', () => {
+            game.scene.getScene("game").fullScreen();
+            if (this.fullScreenButton.texture.key == "fullscreen_button"){
+                this.fullScreenButton.setTexture("unfullscreen_button");
+            }
+            else{
+                this.fullScreenButton.setTexture("fullscreen_button");
+            }
+        });
 
         //this.simSpeedText = this.add.text(-1, 1000, 
         //    "Time Scale: Each second in simulation = 100.05 hours in real life(its updating to match your framerate)");
@@ -58,7 +77,7 @@ export default class UIScene extends Phaser.Scene{
         this.playButton.displayWidth = 64; // times two for diameter(scaling the image)
         this.playButton.scaleY = this.playButton.scaleX;
         this.playButton.setInteractive({useHandCursor: true}).on("pointerdown", () => this.playClicked()).on("pointerover", () => this.playButton.setTint(0xafafaf)).on("pointerout", () => this.playButton.setTint(0xffffff));
-    
+
         document.getElementById("home-attributes").onclick = ()=>{this.switchSideBar("main");}
     }
 

@@ -134,6 +134,10 @@ export default class Game extends Phaser.Scene{
             }
         }
     }
+
+    fullScreen(){
+        this.scale.toggleFullscreen();
+    }
 }
 
 Game.setPaused = function(pause){
