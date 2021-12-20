@@ -44,8 +44,7 @@ export default class SidePanel{
 
 class SidePanelButton{
     constructor(bodyName, sceneObj){
-        this.addTemplate(Game.GravityBodiesDict[bodyName].label.text, Game.GravityBodiesDict[bodyName].sprite.texture.key, sceneObj);
-
+        this.addTemplate(bodyName, Game.GravityBodiesDict[bodyName].sprite.texture.key, sceneObj);
         this.id = Game.GravityBodiesDict[bodyName].id;
     }
 
@@ -54,6 +53,7 @@ class SidePanelButton{
         var clon = template.content.cloneNode(true);
         clon.getElementById("name").textContent = bodyName;
         clon.getElementById("icon-pic").src = name_link[imageName];
+        this.icon_pic = clon.getElementById("icon-pic");
 
         var panel = clon.getElementById("panel-id");
         this.panel = panel;
@@ -71,20 +71,28 @@ class SidePanelButton{
             }
         };
         clon.getElementById("button").onclick = function() {sceneObj.switchSideBar(bodyName)};
-    
+        clon.getElementById("delete_button").onclick = () => {
+            Game.GravityBodies.forEach(function(item, index, array){
+                if (item.id == (Game.GravityBodiesDict[bodyName].id)){
+                    Game.GravityBodies[index].deleteItem();
+                    Game.GravityBodies.splice(index, 1);
+                    document.getElementById("side-button-id-"+index).remove();
+                }
+            });
+            delete Game.GravityBodiesDict[bodyName]; 
+            this.deleted = true;
+        };
+        clon.children[0].id = "side-button-id-"+Game.GravityBodiesDict[bodyName].id;
         document.getElementById("side-panel-id").appendChild(clon);
     }
     
     dead_now(){
-        if (this.dead){
+        if (this.dead || this.deleted){
             return;
         }
+
         this.dead = true;
         this.panel.style.backgroundColor = "#000000";
-        var node = document.createElement("img");
-        node.src = "assets/GravityGame/tombstone.png"
-        node.style.width = "40px";
-        node.style.marginLeft = "190px";
-        this.panel_body.appendChild(node);
+        this.icon_pic.src = "assets/GravityGame/tombstone.png";
     }
 }

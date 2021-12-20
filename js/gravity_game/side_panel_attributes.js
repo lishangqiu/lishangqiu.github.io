@@ -1,4 +1,5 @@
 import Game from "./main_scene.js"
+import {game} from "./main.js"
 import { name_link } from "./UI.js";
 
 export default class SidePanelAttribute{
@@ -33,6 +34,15 @@ export default class SidePanelAttribute{
         this.fillInAttributes();
     }
 
+    updateNonPausable(){
+        this.posXObj.updateValue();
+        this.posYObj.updateValue();
+        this.directionObj.updateValue();
+        this.speedObj.updateValue(); 
+        this.radiusObj.updateValue();
+        this.massObj.updateValue();
+    }
+
     addListeners(){
         document.getElementById("mass-attributes").addEventListener('change', (e) => (this.body.mass = e.target.value));
 
@@ -55,7 +65,7 @@ export default class SidePanelAttribute{
             document.getElementById("body-name-attributes").innerText = this.updatesName;
         }
         
-        this.updateValue(document.getElementById("preset-list-attributes"), this.body.preset); 
+        document.getElementById("preset-list-attributes").value = this.body.preset; 
 
         document.getElementById('icon-list-attributes').value = this.body.sprite.texture.key;
 
@@ -66,14 +76,6 @@ export default class SidePanelAttribute{
         this.radiusObj.fillInAttributes();
         this.massObj.fillInAttributes();
     }
-
-    updateValue(element, text){
-        element.value = text;
-
-        if (element === document.activeElement){
-            Game.puased2 = true;
-        }
-    } 
 }
 
 class NumberAttributeObj{
@@ -85,18 +87,21 @@ class NumberAttributeObj{
     }
 
     fillInAttributes(){
-        this.updateValue(this.element, (this.getFunc()*this.unitMultiply).toFixed(2));
+        this.element.value = (this.getFunc()*this.unitMultiply).toFixed(2);
     }
 
     addListeners(){
         this.element.addEventListener('change', (e) => (this.setFunc(e.target.value/this.unitMultiply)));
     }
 
-    updateValue(element, text){
-        element.value = text;
-
-        if (element === document.activeElement){
+    updateValue(){
+        if (this.element === document.activeElement){
             Game.setPaused(true);
+            if (game.input.activePointer.isDown){
+                if (game.input.activePointer.x < 1500){
+                    this.element.blur();
+                }
+            }
         }
     }
 }

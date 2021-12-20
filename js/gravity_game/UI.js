@@ -47,8 +47,8 @@ export default class UIScene extends Phaser.Scene{
         //this.simSpeedText.setPosition(SIZE_WIDTH_SCREEN/2-(this.simSpeedText.width/2), 1050);
         //this.simSpeedText.depth = 3;
         
-        this.simSpeedSlider = new SliderUI(30, 150, 240 , this, 0xD9DDDC);
-        this.add.text(18, 230, "Simulation\n  Speed");
+        this.simSpeedSlider = new SliderUI(30, 120, 310 , this, 0xD9DDDC);
+        this.add.text(18, 170, "Simulation\n  Speed");
 
         this.earthDaysText = this.add.text(780, 1030, "Earth days").setOrigin(0.5, 0.5).setFontSize(23);
         this.sidePanelObj.create(this);
@@ -65,7 +65,7 @@ export default class UIScene extends Phaser.Scene{
     update(){
         this.lastTime = new Date().getTime();
         // set the amount of times of simulation
-        GravityBody.simTimes = Math.round(((1-this.simSpeedSlider.sliderImg.slider.value) * 100) + 8);
+        GravityBody.simTimes = Math.round(((1-this.simSpeedSlider.sliderImg.slider.value) * 160) + 8);
 
         //this.simSpeedText.text = "Time Scale: Each second in simulation = " + 
         //(resolutionTime*GravityBody.simTimes*game.loop.actualFps/3600).toFixed(3) + " hours in real life(its updating to match your framerate)";
@@ -93,8 +93,9 @@ export default class UIScene extends Phaser.Scene{
         else{
             this.playButton.setTexture("pause_button");
         }
+        this.attributesPanelObj.updateNonPausable();
 
-        this.input.on('pointerdown', () => {clearSelection();}, this);
+        //this.input.on('pointerdown', () => {clearSelection();}, this);
     }
 
     
@@ -131,7 +132,7 @@ function clearSelection() {
             if ( tagName == "textarea" ||
                     (tagName == "input" && activeEl.type == "text") ) {
                 // Collapse the selection to the end
-                activeEl.selectionStart = activeEl.selectionEnd;
+                activeEl.selectionStart = activeEl.selectionEnd; 
             }
         }
     }

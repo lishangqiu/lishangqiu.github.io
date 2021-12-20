@@ -26,14 +26,19 @@
         <script src='js/gravity_game/main.js' type='module'></script>
 
         <template id="gravity-body">
-            <a  href="#" id="button" style="text-decoration: none !important;">
-                <div class="panel panel-default" style="width: 420px; height: 70px; margin-bottom: 0px; background-color: #1a1a1a;border-color: black;" id="panel-id">
-                    <div class="panel-body" style="color: #ffffff;" id="panel-id-body">
-                        <img src="watcha looking at.jpg" alt="image" id="icon-pic" style="display:inline; width: 42px;height: 42px;">
-                        <p style="display:inline; font-family: 'Courier New'; font-size: 20px; width: fit-content; margin-left: 23px;" id="name"></p>
+            <div>
+                <a href="#" id="button" style="text-decoration: none !important; display: inline-block;">
+                    <div class="panel panel-default" style="width: 420px; height: 70px; margin-bottom: 0px; background-color: #1a1a1a;border-color: black;" id="panel-id">
+                        <div class="panel-body" style="color: #ffffff;" id="panel-id-body">
+                            <img src="watcha looking at.jpg" alt="image" id="icon-pic" style="display:inline; width: 42px;height: 42px;">
+                            <p style="display:inline; font-family: 'Courier New'; font-size: 20px; width: fit-content; margin-left: 23px;"><b id="name"></b></p>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+                <a href="#" style="position: absolute; width: 40px; height: 40px; left: 335px; display: inline-block; margin-top: 15px;" id="delete_button">
+                    <img src="assets/GravityGame/delete_icon.png" alt="image" style="width: 35px; height: 35px;" id="body-icon">
+                </a>
+            </div>
         </template>
 
         <div id="sidepanel">
