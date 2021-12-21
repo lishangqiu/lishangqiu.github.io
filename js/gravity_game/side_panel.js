@@ -1,5 +1,5 @@
 import Game from "./main_scene.js"
-import {name_link} from "./UI.js"
+import {name_link} from "./main_scene.js"
 
 const iconSize = 64;
 
@@ -10,8 +10,9 @@ export default class SidePanel{
     }
 
     preload(){
-        this.load.image("Earth", "assets/GravityGame/earth.png");
-        this.load.image("Sun", "assets/GravityGame/sun.png");
+        Object.entries(name_link).map(([key, value]) => {
+            this.load.image(key, value);
+        })
     }
 
     create(sceneObj){

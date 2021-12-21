@@ -7,12 +7,6 @@ import SidePanel from "./side_panel.js";
 import SidePanelAttribute from "./side_panel_attributes.js"
 import {game} from "./main.js"
 
-const name_link = {
-    "Earth": "assets/GravityGame/earth.png",
-    "Sun": "assets/GravityGame/sun.png",
-    "_GraveStone": "assets/GravityGame/tombstone.png"
-}
-export {name_link};
 
 export default class UIScene extends Phaser.Scene{
     constructor(){

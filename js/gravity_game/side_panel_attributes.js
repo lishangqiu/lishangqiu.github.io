@@ -1,6 +1,6 @@
 import Game from "./main_scene.js"
 import {game} from "./main.js"
-import { name_link } from "./UI.js";
+import { name_link } from "./main_scene.js";
 
 export default class SidePanelAttribute{
     constructor(){
@@ -11,10 +11,10 @@ export default class SidePanelAttribute{
         () => {return this.body.pos.y.toFixed(2);}, (val) => {this.body.setPosY(val);}, 0.001);
 
         this.directionObj = new NumberAttributeObj(document.getElementById("direction-attributes"), 
-        () => {return this.body.velocity.direction().toFixed(2);}, (val) => {this.body.setDirection(val)}, 1);
+        () => {return this.body.velocity.direction().toFixed(4);}, (val) => {this.body.setDirection(val)}, 1);
 
         this.speedObj = new NumberAttributeObj(document.getElementById("speed-attributes"), 
-        () => {return this.body.velocity.magnitude().toFixed(2);}, (val) => {this.body.setMagnitude(val)}, 0.001);
+        () => {return this.body.velocity.magnitude().toFixed(4);}, (val) => {this.body.setMagnitude(val)}, 0.001);
 
         this.radiusObj = new NumberAttributeObj(document.getElementById("radius-attributes"), 
         () => {return this.body.radius}, (val) => {this.body.setRadius(val)}, 0.001);
@@ -58,7 +58,9 @@ export default class SidePanelAttribute{
         this.massObj.addListeners();
         document.getElementById('icon-list-attributes').onchange = (val) => {this.body.setSpriteIcon(val.target.value);this.fillInAttributes();};
         document.getElementById("preset-list-attributes").onchange = (val) => {
-            document
+            console.log(val.target.value);
+            this.body.updatePreset(val.target.value);
+            this.fillInAttributes();
         };
         
     }

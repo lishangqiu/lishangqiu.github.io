@@ -15,19 +15,33 @@ var middleY = SIZE_HEIGHT_SCREEN/2;
 var _idIndex = 0;
 export {resolutionTime};
 
+// pos vector(aphelion), velocity vector(mininum speed), radius, mass, texture name
+var presets = {
+    "Sun": [new Victor(0, 0), new Victor(0, 0), 69.34e6, 1.989e30, "Sun"],
+    "Earth": [new Victor(152.1e9, 0), new Victor(0, -29290), 6.73e6, 5.972e24, "Earth"],
+    "Venus": [new Victor(108.939e9, 0), new Victor(0, -34790), 6.05177718e6, 4.867e24, "Venus"],
+    "Mercury": [new Victor(69.817e9, 0), new Victor(0,-38860), 2.439766e6, 0.33010e24, "Mercury"]
+}
 
 export default class GravityBody{
     // starting_pos(note coordinates start from the center as 0,0), starting_velocity, radius, (density or mass) in SI units
-    constructor(options){
-        this.pos = options.starting_pos.clone();
-        this.velocity = options.starting_velocity.clone();
-        this.radius = options.radius;
+    constructor(options_temp){
+        var options = options_temp;
+        if (options_temp.preset_name == "Custom"){
+            this.pos = options.starting_pos.clone();
+            this.velocity = options.starting_velocity.clone();
+            this.radius = options.radius;
 
-        if (options.density){
-            this.mass = (4/3)*Math.PI*(Math.pow(options.radius,3)) * options.density;
+            if (options.density){
+                this.mass = (4/3)*Math.PI*(Math.pow(options.radius,3)) * options.density;
+            }
+            else{
+                this.mass = options.mass;
+            }
+            this.textureName = options.textureName;
         }
         else{
-            this.mass = options.mass;
+            this.setPreset(options_temp.preset_name);
         }
         
         this.sceneObj = options.sceneObj;
@@ -40,7 +54,23 @@ export default class GravityBody{
         this.lastPoint = this.pos.clone().multiplyScalar(screenScale);
         this.name = options.name;
         this.preset = options.preset_name;
-        this.initDraw(this.radius, options.textureName);
+        this.initDraw(this.radius, this.textureName);
+    }
+    
+    setPreset(presetName){
+        this.pos = presets[presetName][0].clone();
+        this.velocity = presets[presetName][1].clone();
+        this.radius = presets[presetName][2];
+        this.mass = presets[presetName][3];
+        this.textureName = presets[presetName][4];
+    }
+
+    updatePreset(presetName){
+        this.deleteItem();
+        this.preset = presetName;
+        this.setPreset(presetName);
+        this.initDraw(this.radius, this.textureName);
+        this.drawObjPos();
     }
 
     // returns displacement(unit: m)

@@ -2,12 +2,14 @@ import GravityBody from "./gravity_body.js"
 import {MIN_ZOOM, MAX_ZOOM, SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
 import { game } from "./main.js";
 
-// pos vector, velocity vector, radius, mass, texture name
-var presets = {
-    "Sun": [new Victor(0, 0), new Victor(0, 0), 69.34e6, 1.989e30, "Sun"],
-    "Earth": [new Victor(149e9, 0), new Victor(0, -30000), 6.73e6, 5.972e24, "Earth"]
+const name_link = {
+    "Earth": "assets/GravityGame/earth.png",
+    "Sun": "assets/GravityGame/sun.png",
+    "Venus": "assets/GravityGame/venus.png",
+    "Mercury": "assets/GravityGame/mercury.png",
+    "_GraveStone": "assets/GravityGame/tombstone.png"
 }
-
+export {name_link};
 
 export default class Game extends Phaser.Scene{
     startX = null;
@@ -26,6 +28,8 @@ export default class Game extends Phaser.Scene{
         this.load.image('background', 'assets/GravityGame/background.jpg');
         this.load.image("Earth", "assets/GravityGame/earth.png");
         this.load.image("Sun", "assets/GravityGame/sun.png");
+        this.load.image("Venus", "assets/GravityGame/venus.png")
+        this.load.image("Mercury", "assets/GravityGame/mercury.png")
     }
 
     create(){
@@ -99,12 +103,7 @@ export default class Game extends Phaser.Scene{
         else{
             var name = preset_name;
             config = {
-                starting_pos : presets[preset_name][0],
-                starting_velocity : presets[preset_name][1],
-                radius : presets[preset_name][2],
-                mass : presets[preset_name][3],
                 sceneObj : this,
-                textureName : presets[preset_name][4],
                 name: name,
                 preset_name: preset_name,
             };
