@@ -14,13 +14,16 @@ export default class SidePanelAttribute{
         () => {return this.body.velocity.direction().toFixed(2);}, (val) => {this.body.setDirection(val)}, 1);
 
         this.speedObj = new NumberAttributeObj(document.getElementById("speed-attributes"), 
-        () => {return this.body.velocity.magnitude().toFixed(2);}, (val) => {this.body.setMagnitude(val)}, 1);
+        () => {return this.body.velocity.magnitude().toFixed(2);}, (val) => {this.body.setMagnitude(val)}, 0.001);
 
         this.radiusObj = new NumberAttributeObj(document.getElementById("radius-attributes"), 
-        () => {return this.body.radius}, (val) => {this.body.setRadius(val)}, 1);
+        () => {return this.body.radius}, (val) => {this.body.setRadius(val)}, 0.001);
 
         this.massObj = new NumberAttributeObj(document.getElementById("mass-attributes"), 
-        () => {return this.body.mass}, (val) => {this.body.mass = val}, 1);
+        () => {return this.body.mass}, (val) => {this.body.mass = val}, 0.001);
+
+        /*this.iconChoiceObj = new NumberAttributeObj(, 
+        () => {return }, (val) => {console.log("hoa");this.body.setSpriteIcon(val)}, 1);*/
     }
 
     updateBody(bodyId){
@@ -53,6 +56,11 @@ export default class SidePanelAttribute{
         this.speedObj.addListeners();
         this.radiusObj.addListeners();
         this.massObj.addListeners();
+        document.getElementById('icon-list-attributes').onchange = (val) => {this.body.setSpriteIcon(val.target.value);this.fillInAttributes();};
+        document.getElementById("preset-list-attributes").onchange = (val) => {
+            document
+        };
+        
     }
 
 
@@ -67,7 +75,6 @@ export default class SidePanelAttribute{
         }
         document.getElementById("body-name-attributes").addEventListener('change', (e) => (this.body.updateName(e.target.value)));
         document.getElementById("preset-list-attributes").value = this.body.preset; 
-
         document.getElementById('icon-list-attributes').value = this.body.sprite.texture.key;
 
         this.posXObj.fillInAttributes();
@@ -92,7 +99,7 @@ class NumberAttributeObj{
     }
 
     addListeners(){
-        this.element.addEventListener('change', (e) => (this.setFunc(e.target.value/this.unitMultiply)));
+        this.element.onchange = (e) => (this.setFunc(e.target.value/this.unitMultiply));
     }
 
     updateValue(){
@@ -101,7 +108,6 @@ class NumberAttributeObj{
             if (game.input.activePointer.isDown){
                 if (game.input.activePointer.x < 1500){
                     this.element.blur();
-
                 }
             }
         }
