@@ -58,7 +58,7 @@ export default class Game extends Phaser.Scene{
 
         this.createBody("Sun");
         this.createBody("Earth");
-        this.createBody("Custom", -180e9, 0, 0, -25000, 20.34e6, 1.989e29, "Sun", "AnotherStar");
+        this.createBody("Custom", -180e9, 0, 0, -35000, 30.34e6, 4.989e29, "Sun", "AnotherStar");
 
         // init
         Game.GravityBodies.forEach(function(item, index, array) {

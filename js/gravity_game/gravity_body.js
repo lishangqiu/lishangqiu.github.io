@@ -142,6 +142,7 @@ export default class GravityBody{
     setRadius(radius){
         this.radius = radius;
         this.sprite.displayWidth = radius * screenScale * radiusUpscale *2;
+        this.sprite.scaleY = this.sprite.scaleX;
     }
 
     setPosX(x){
@@ -158,6 +159,10 @@ export default class GravityBody{
         this.name = name;
         this.label.setText(name);
         game.scene.getScene("UIScene").sidePanelObj.buttonsID[this.id].updateName(name);
+    }
+
+    setSpriteIcon(textureName){
+        this.sprite.setTexture(textureName);
     }
 }
 
