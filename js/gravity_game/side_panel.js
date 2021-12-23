@@ -1,7 +1,9 @@
 import Game from "./main_scene.js"
 import {name_link} from "./main_scene.js"
+import {game} from "./main.js"
 
 const iconSize = 64;
+var untitledNums = 1;
 
 export default class SidePanel{
     constructor(){
@@ -21,13 +23,19 @@ export default class SidePanel{
         sceneObj.add.line(0,0,1500,0,1500,2160,0xffffff);
 
         for (let i = 0; i < Game.GravityBodies.length; i++){
-            var obj = new SidePanelButton(Game.GravityBodies[i].id, sceneObj);
+            var obj = new SidePanelButton(Game.GravityBodies[i].id, sceneObj, this);
             this.buttons.push(obj);
             this.buttonsID[Game.GravityBodies[i].id] = obj;
         }
-
+        this.sceneObj = sceneObj;
         var dom = sceneObj.add.dom(1517, 0, "#sidepanel");
         dom.setOrigin(0, 0)
+    }
+
+    insertLast(){
+        var obj = new SidePanelButton(Game.GravityBodies[Game.GravityBodies.length-1].id, this.sceneObj);
+        this.buttons.push(obj);
+        this.buttonsID[Game.GravityBodies[Game.GravityBodies.length-1].id] = obj;
     }
 
     update(){
@@ -47,9 +55,10 @@ export default class SidePanel{
 
 
 class SidePanelButton{
-    constructor(bodyId, sceneObj){
+    constructor(bodyId, sceneObj, parentObj){
         this.addTemplate(bodyId, Game.GravityBodiesDict[bodyId].sprite.texture.key, sceneObj);
         this.id = bodyId;
+        this.parentObj = parentObj;
     }
 
     addTemplate(bodyId, imageName, sceneObj){
@@ -90,6 +99,14 @@ class SidePanelButton{
             this.deleted = true;
         };
         clon.children[0].id = "side-button-id-"+Game.GravityBodiesDict[bodyId].id;
+
+        document.getElementById("plus_button1").onclick = () => {
+            var id = game.scene.getScene("game").createBody({name: "Untitled" + untitledNums, preset_name: "Earth"});
+            untitledNums++;
+            this.parentObj.insertLast();
+            game.scene.getScene("UIScene").switchSideBar(id);
+        };
+
         document.getElementById("side-panel-id").appendChild(clon);
     }
     
@@ -105,5 +122,9 @@ class SidePanelButton{
 
     updateName(name){
         this.nameElement.textContent = name;
+    }
+
+    updateIcon(textureName){
+        this.icon_pic.src = name_link[textureName];
     }
 }

@@ -5,8 +5,8 @@ import { SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
 const gravitationalConstant = 6.67428e-11;
 //const screenScale = 0.00000470883; // pixel/meter
 const screenScale = 0.000000002; // pixel/meter
-const resolutionTime = 4000; // simulated second/frame
-const radiusUpscale = 500;
+const resolutionTime = 4000/20; // simulated second/frame
+const radiusUpscale = 100;
 const labelDegree = -225;
 
 var middleX = SIZE_WIDTH_SCREEN/2;
@@ -78,6 +78,10 @@ export default class GravityBody{
         // this is seperate from updatePos because we might want to calculate path
         //var deltaTime = ((new Date().getTime() - this.lastSimulated) / 1000) * updateTime; // /1000 is to convert from ms to s
         //this.lastSimulated = new Date().getTime();
+        if (this.deleted){
+            return;
+        }
+
         var currID = this.id;
         var mass = this.mass;
         var pos = this.pos;
@@ -88,8 +92,9 @@ export default class GravityBody{
         Game.GravityBodies.forEach(function(item, index, array){
             if (item.id != currID){
                 var distVector = pos.clone().subtract(item.pos);
+                //console.log(Math.sqrt(distVector.x*distVector.x + distVector.y*distVector.y));
                 if (Math.sqrt(distVector.x*distVector.x + distVector.y*distVector.y) < ((item.radius + radius))*radiusUpscale){
-                    if (item.radius < radius){
+                    if (item.radius <= radius){
                         Game.GravityBodies.splice(Game.GravityBodies.indexOf(item), 1);
                         item.deleteItem();
                         item.deleted = true;
@@ -98,7 +103,7 @@ export default class GravityBody{
             }
         });
 
-        var accelerations = []
+        var accelerations = [];
         Game.GravityBodies.forEach(function(item, index, array){
             if (item.id != currID){
                 accelerations.push(GravityBody.getGravityAcceleration(mass, item.mass, pos, item.pos));

@@ -20,16 +20,15 @@ export default class Game extends Phaser.Scene{
         Game.GravityBodies = [];
         Game.GravityBodiesDict = {};
         Game.paused = true;
+        Game.allBodyIds = [];
     }
 
     preload(){
-
         // load stuff soon
         this.load.image('background', 'assets/GravityGame/background.jpg');
-        this.load.image("Earth", "assets/GravityGame/earth.png");
-        this.load.image("Sun", "assets/GravityGame/sun.png");
-        this.load.image("Venus", "assets/GravityGame/venus.png")
-        this.load.image("Mercury", "assets/GravityGame/mercury.png")
+        Object.entries(name_link).map(([key, value]) => {
+            this.load.image(key, value);
+        })
     }
 
     create(){
@@ -60,14 +59,17 @@ export default class Game extends Phaser.Scene{
         this.input.on('pointermove', this.onPointerMove, this);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        this.createBody("Sun");
-        this.createBody("Earth");
-        this.createBody("Custom", -180e9, 0, 0, -35000, 30.34e6, 4.989e29, "Sun", "AnotherStar");
+        this.createBody({preset_name: "Sun", name: "Sun"});
+        this.createBody({preset_name: "Earth", name: "Earth"});
+        this.createBody({preset_name: "Venus", name: "Venus"});
+        this.createBody({preset_name: "Custom", posX: -180e9, posY: 0, velocityX: 0, velocityY: -35000, 
+                   radius: 30.34e6, mass: 4.989e29, textureName: "Sun", name: "AnotherStar"});
+        //this.createBody({preset_name: "Custom", posX: 152.1e9, posY: 0, velocityX: -1000000, velocityY: 10000, radius: 6.73e6, mass: 5.972e24, textureName: "Earth", name: "test"});
 
         // init
-        Game.GravityBodies.forEach(function(item, index, array) {
+        /*Game.GravityBodies.forEach(function(item, index, array) {
             item.drawNewPos();
-        });
+        });*/
 
         Game.gra = this.add.graphics();
         Game.gra.lineStyle(5, 0xFF00FF, 1.0);
@@ -80,39 +82,41 @@ export default class Game extends Phaser.Scene{
         }
         if (!Game.paused){
             Game.GravityBodies.forEach(function(item, index, array) {
-                item.drawNewPos();
+                item.drawNewPos(Game.allBodyIds);
             });
         }
-        
     }
 
-    createBody(preset_name, posX, posY, velocityX, velocityY, radius, mass, textureName, name){
+    createBody(options){
         var config;
-        if (preset_name == "Custom"){
+        if (options.preset_name == "Custom"){
+            console.log(options.posX);
             config = {
-                starting_pos : new Victor(posX, posY),
-                starting_velocity : new Victor(velocityX, velocityY),
-                radius : radius,
-                mass : mass,
+                starting_pos : new Victor(options.posX, options.posY),
+                starting_velocity : new Victor(options.velocityX, options.velocityY),
+                radius : options.radius,
+                mass : options.mass,
                 sceneObj : this,
-                textureName : textureName,
-                name: name,
-                preset_name: preset_name,
+                textureName : options.textureName,
+                name: options.name,
+                preset_name: options.preset_name,
             };
         }
         else{
-            var name = preset_name;
             config = {
                 sceneObj : this,
-                name: name,
-                preset_name: preset_name,
+                name: options.name,
+                preset_name: options.preset_name,
             };
         }
-
+        console.log(config.name);
 
         var obj = new GravityBody(config);
+        obj.drawObjPos();
         Game.GravityBodies.push(obj);
         Game.GravityBodiesDict[obj.id] = obj;
+        Game.allBodyIds.push(obj.id);
+        return obj.id;
     }
 
     onPointerMove(pointer){

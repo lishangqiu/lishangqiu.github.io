@@ -27,6 +27,8 @@ export default class SidePanelAttribute{
     }
 
     updateBody(bodyId){
+        console.log(bodyId); 
+
         this.bodyId = bodyId;
         this.body = Game.GravityBodiesDict[bodyId];
         this.fillInAttributes();
@@ -58,9 +60,9 @@ export default class SidePanelAttribute{
         this.massObj.addListeners();
         document.getElementById('icon-list-attributes').onchange = (val) => {this.body.setSpriteIcon(val.target.value);this.fillInAttributes();};
         document.getElementById("preset-list-attributes").onchange = (val) => {
-            console.log(val.target.value);
             this.body.updatePreset(val.target.value);
             this.fillInAttributes();
+            game.scene.getScene("UIScene").sidePanelObj.buttonsID[this.bodyId].updateIcon(val.target.value);
         };
         
     }
@@ -71,6 +73,15 @@ export default class SidePanelAttribute{
             document.getElementById("icon-pic-attributes").src = name_link["_GraveStone"];
             document.getElementById("body-name-attributes").value  = "[DEAD] " + this.body.name;
             document.getElementById("body-name-attributes").disabled = true;
+
+            this.posXObj.disable();
+            this.posYObj.disable();
+            this.directionObj.disable();
+            this.speedObj.disable(); 
+            this.radiusObj.disable();
+            this.massObj.disable();
+            document.getElementById("preset-list-attributes").disabled = true;
+            document.getElementById('icon-list-attributes').disabled = true;
         }
         else{
             document.getElementById("icon-pic-attributes").src = name_link[this.body.sprite.texture.key];
@@ -113,5 +124,9 @@ class NumberAttributeObj{
                 }
             }
         }
+    }
+
+    disable(){
+        this.element.disabled = true;
     }
 }

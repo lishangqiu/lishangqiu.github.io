@@ -73,12 +73,14 @@ export default class UIScene extends Phaser.Scene{
         this.playButton.setInteractive({useHandCursor: true}).on("pointerdown", () => this.playClicked()).on("pointerover", () => this.playButton.setTint(0xafafaf)).on("pointerout", () => this.playButton.setTint(0xffffff));
 
         document.getElementById("home-attributes").onclick = ()=>{this.switchSideBar("main");}
+        this.debug = this.add.text(1000, 10, '', { font: '16px Courier', fill: '#00ff00' });
     }
 
     update(){
         this.lastTime = new Date().getTime();
         // set the amount of times of simulation
-        GravityBody.simTimes = Math.round(((1-this.simSpeedSlider.sliderImg.slider.value) * 160) + 8);
+        GravityBody.simTimes = Math.round(((1-this.simSpeedSlider.sliderImg.slider.value) * 3200) + 160);
+        //GravityBody.simTimes = Math.round(100 );
 
         //this.simSpeedText.text = "Time Scale: Each second in simulation = " + 
         //(resolutionTime*GravityBody.simTimes*game.loop.actualFps/3600).toFixed(3) + " hours in real life(its updating to match your framerate)";
@@ -109,6 +111,10 @@ export default class UIScene extends Phaser.Scene{
         this.attributesPanelObj.updateNonPausable();
 
         //this.input.on('pointerdown', () => {clearSelection();}, this);
+        
+        this.debug.setText([
+            'Duration: ' + game.loop.actualFps
+        ]);
     }
 
     
