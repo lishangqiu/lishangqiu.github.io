@@ -6,21 +6,23 @@ const gravitationalConstant = 6.67428e-11;
 //const screenScale = 0.00000470883; // pixel/meter
 const screenScale = 0.000000002; // pixel/meter
 const resolutionTime = 4000/20; // simulated second/frame
-const radiusUpscale = 100;
+const radiusUpscale = 300;
 const labelDegree = -225;
 
 var middleX = SIZE_WIDTH_SCREEN/2;
 var middleY = SIZE_HEIGHT_SCREEN/2;
 
 var _idIndex = 0;
-export {resolutionTime};
+export {resolutionTime, radiusUpscale};
 
 // pos vector(aphelion), velocity vector(mininum speed), radius, mass, texture name
 var presets = {
     "Sun": [new Victor(0, 0), new Victor(0, 0), 69.34e6, 1.989e30, "Sun"],
-    "Earth": [new Victor(152.1e9, 0), new Victor(0, -29290), 6.73e6, 5.972e24, "Earth"],
+    "Mercury": [new Victor(69.817e9, 0), new Victor(0,-38860), 2.439766e6, 0.33010e24, "Mercury"],
     "Venus": [new Victor(108.939e9, 0), new Victor(0, -34790), 6.05177718e6, 4.867e24, "Venus"],
-    "Mercury": [new Victor(69.817e9, 0), new Victor(0,-38860), 2.439766e6, 0.33010e24, "Mercury"]
+    "Earth": [new Victor(152.1e9, 0), new Victor(0, -29290), 6.73e6, 5.972e24, "Earth"],
+    "Mars": [new Victor(249.261e9, 0), new Victor(0, -21970), 3.3895e6, 0.64169e24, "Mars"],
+
 }
 
 export default class GravityBody{
@@ -55,6 +57,10 @@ export default class GravityBody{
         this.name = options.name;
         this.preset = options.preset_name;
         this.initDraw(this.radius, this.textureName);
+        this.lineColor = options.lineColor;
+
+        this.graphicLines = this.sceneObj.add.graphics();
+        this.graphicLines.fillStyle(this.lineColor, 1.0);
     }
     
     setPreset(presetName){
@@ -90,7 +96,7 @@ export default class GravityBody{
         
         // check if we've collided with something else
         Game.GravityBodies.forEach(function(item, index, array){
-            if (item.id != currID){
+            if (item.id != currID && !item.invisible){
                 var distVector = pos.clone().subtract(item.pos);
                 //console.log(Math.sqrt(distVector.x*distVector.x + distVector.y*distVector.y));
                 if (Math.sqrt(distVector.x*distVector.x + distVector.y*distVector.y) < ((item.radius + radius))*radiusUpscale){
@@ -105,7 +111,7 @@ export default class GravityBody{
 
         var accelerations = [];
         Game.GravityBodies.forEach(function(item, index, array){
-            if (item.id != currID){
+            if (item.id != currID && !item.invisible){
                 accelerations.push(GravityBody.getGravityAcceleration(mass, item.mass, pos, item.pos));
             }
         });
@@ -122,7 +128,7 @@ export default class GravityBody{
                 //this.sceneObj.add.line(0, 0, this.lastPoint.x + middleX, this.lastPoint.y + middleY,
                     //(this.pos.x * screenScale) + middleX, (this.pos.y * screenScale) + middleY, 0xf8f9f0);
                 //this.sceneObj.add.circle((this.pos.x * screenScale) + middleX, (this.pos.y * screenScale) + middleY, 1, 0xf8f9f0);
-                Game.gra.fillPoint((this.pos.x * screenScale) + middleX, (this.pos.y * screenScale) + middleY, 2);
+                this.graphicLines.fillPoint((this.pos.x * screenScale) + middleX, (this.pos.y * screenScale) + middleY, 2);
                 this.lastPoint = this.pos.clone().multiplyScalar(screenScale);
         }
 
@@ -130,6 +136,9 @@ export default class GravityBody{
     }
 
     drawNewPos(){
+        if (this.invisible){
+            return;
+        }
         for (let i=0;i<GravityBody.simTimes;i++){
             this.simGravity();
         }
@@ -198,6 +207,18 @@ export default class GravityBody{
 
     setSpriteIcon(textureName){
         this.sprite.setTexture(textureName);
+    }
+
+    setInvisible(){
+        this.sprite.setAlpha(0.2);
+        this.label.setAlpha(0.2);
+        this.invisible = true;
+    }
+
+    setAppear(){
+        this.sprite.setAlpha(1);
+        this.label.setAlpha(1);
+        this.invisible = false;
     }
 }
 

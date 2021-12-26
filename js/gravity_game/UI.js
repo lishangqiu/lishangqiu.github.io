@@ -1,6 +1,6 @@
 import SliderUI from "./slider.js"
 import GravityBody from "./gravity_body.js";
-import {resolutionTime} from "./gravity_body.js"
+import {resolutionTime, radiusUpscale} from "./gravity_body.js"
 import {SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from "./config.js"
 import Game from "./main_scene.js"
 import SidePanel from "./side_panel.js";
@@ -39,7 +39,7 @@ export default class UIScene extends Phaser.Scene{
         this.cameras.main.setZoom(1);
         this.scale.fullscreenTarget = document.getElementById("game");
         this.add.text(20, 10, 
-            "Scale: 5x10^10 meters/pixel\n\nRadius are upscaled by: 500x for visibility\n");
+            "Scale: 5x10^10 meters/pixel\n\nRadius are upscaled by: " + radiusUpscale + "x for visibility\n");
 
         this.fullScreenButton = this.add.sprite(1400, 60, "fullscreen_button").setOrigin(0.5, 0.5).setInteractive({useHandCursor: true});
         this.fullScreenButton.displayWidth = 32; // times two for diameter(scaling the image)
@@ -72,14 +72,14 @@ export default class UIScene extends Phaser.Scene{
         this.playButton.scaleY = this.playButton.scaleX;
         this.playButton.setInteractive({useHandCursor: true}).on("pointerdown", () => this.playClicked()).on("pointerover", () => this.playButton.setTint(0xafafaf)).on("pointerout", () => this.playButton.setTint(0xffffff));
 
-        document.getElementById("home-attributes").onclick = ()=>{this.switchSideBar("main");}
+        document.getElementById("home-attributes").onclick = ()=>{this.switchSideBar("main");game.scene.getScene("game").currFollowing = null;}
         this.debug = this.add.text(1000, 10, '', { font: '16px Courier', fill: '#00ff00' });
     }
 
     update(){
         this.lastTime = new Date().getTime();
         // set the amount of times of simulation
-        GravityBody.simTimes = Math.round(((1-this.simSpeedSlider.sliderImg.slider.value) * 3200) + 160);
+        GravityBody.simTimes = Math.round(((1-this.simSpeedSlider.sliderImg.slider.value) * 1000) + 160);
         //GravityBody.simTimes = Math.round(100 );
 
         //this.simSpeedText.text = "Time Scale: Each second in simulation = " + 

@@ -1,4 +1,4 @@
-import Handler from './scaling_manager.js'
+
 import UIScene from './UI.js'
 import Game from './main_scene.js'
 import {MAX_SIZE_WIDTH_SCREEN,MAX_SIZE_HEIGHT_SCREEN,MIN_SIZE_WIDTH_SCREEN,

@@ -5,23 +5,23 @@ import { name_link } from "./main_scene.js";
 export default class SidePanelAttribute{
     constructor(){
         this.posXObj = new NumberAttributeObj(document.getElementById("posX-attributes"), 
-        () => {return this.body.pos.x.toFixed(2);}, (val) => {this.body.setPosX(val);}, 0.001);
+        () => {return this.body.pos.x}, (val) => {this.body.setPosX(val);}, 0.001);
 
         this.posYObj = new NumberAttributeObj(document.getElementById("posY-attributes"), 
-        () => {return this.body.pos.y.toFixed(2);}, (val) => {this.body.setPosY(val);}, 0.001);
+        () => {return this.body.pos.y}, (val) => {this.body.setPosY(val);}, 0.001);
 
         this.directionObj = new NumberAttributeObj(document.getElementById("direction-attributes"), 
-        () => {return this.body.velocity.direction().toFixed(4);}, (val) => {this.body.setDirection(val)}, 1);
+        () => {return this.body.velocity.direction()}, (val) => {this.body.setDirection(val)}, 1);
 
         this.speedObj = new NumberAttributeObj(document.getElementById("speed-attributes"), 
-        () => {return this.body.velocity.magnitude().toFixed(4);}, (val) => {this.body.setMagnitude(val)}, 0.001);
+        () => {return this.body.velocity.magnitude()}, (val) => {this.body.setMagnitude(val)}, 0.001);
 
         this.radiusObj = new NumberAttributeObj(document.getElementById("radius-attributes"), 
         () => {return this.body.radius}, (val) => {this.body.setRadius(val)}, 0.001);
 
         this.massObj = new NumberAttributeObj(document.getElementById("mass-attributes"), 
-        () => {return this.body.mass}, (val) => {this.body.mass = val}, 0.001);
-
+        () => {return this.body.mass}, (val) => {this.body.mass = val}, 1);
+        
         /*this.iconChoiceObj = new NumberAttributeObj(, 
         () => {return }, (val) => {console.log("hoa");this.body.setSpriteIcon(val)}, 1);*/
     }
@@ -64,7 +64,25 @@ export default class SidePanelAttribute{
             this.fillInAttributes();
             game.scene.getScene("UIScene").sidePanelObj.buttonsID[this.bodyId].updateIcon(val.target.value);
         };
-        
+        document.getElementById("follow-button").onclick = () => {
+            if (game.scene.getScene("game").currFollowing == this.bodyId){
+                game.scene.getScene("game").currFollowing = null;
+            }
+            else{ 
+                game.scene.getScene("game").currFollowing = this.bodyId;
+            }
+            this.fillInAttributes();
+        }
+
+        document.getElementById("appear-button").onclick = () => {
+            if (this.body.invisible){
+                this.body.setAppear();
+            }
+            else{
+                this.body.setInvisible();
+            }
+            this.fillInAttributes();
+        }
     }
 
 
@@ -96,6 +114,28 @@ export default class SidePanelAttribute{
         this.speedObj.fillInAttributes(); 
         this.radiusObj.fillInAttributes();
         this.massObj.fillInAttributes();
+
+        var targetStr;
+        if (game.scene.getScene("game").currFollowing == this.bodyId){
+            targetStr = "Unfollow";
+        }
+        else{ 
+            targetStr = "Follow";
+        }
+        if (document.getElementById("follow-button").innerText != targetStr){
+            document.getElementById("follow-button").innerText = targetStr;
+        }
+
+        var targetStr;
+        if (this.body.invisible){
+            targetStr = "Invisible";
+        }
+        else{ 
+            targetStr = "Visible";
+        }
+        if (document.getElementById("appear-button").innerText != targetStr){
+            document.getElementById("appear-button").innerText = targetStr;
+        }
     }
 }
 
@@ -108,7 +148,13 @@ class NumberAttributeObj{
     }
 
     fillInAttributes(){
-        this.element.value = (this.getFunc()*this.unitMultiply).toFixed(2);
+        let num = (this.getFunc()*this.unitMultiply);
+        if (this.checkToExponent(num)){
+            this.element.value = num.toExponential(4);
+        }
+        else{
+            this.element.value = num.toFixed(2);
+        }
     }
 
     addListeners(){
@@ -124,6 +170,13 @@ class NumberAttributeObj{
                 }
             }
         }
+    }
+
+    checkToExponent(num){
+        if (Math.abs(num) > 1e4){
+            return true;
+        }
+        return false;
     }
 
     disable(){

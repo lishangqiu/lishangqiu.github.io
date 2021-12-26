@@ -29,7 +29,14 @@ export default class SidePanel{
         }
         this.sceneObj = sceneObj;
         var dom = sceneObj.add.dom(1517, 0, "#sidepanel");
-        dom.setOrigin(0, 0)
+        dom.setOrigin(0, 0);
+
+        document.getElementById("plus_button1").onclick = () => {
+            var id = game.scene.getScene("game").createBody({name: "Untitled" + untitledNums, preset_name: "Mercury"});
+            untitledNums++;
+            this.insertLast();
+            game.scene.getScene("UIScene").switchSideBar(id);
+        };
     }
 
     insertLast(){
@@ -100,12 +107,6 @@ class SidePanelButton{
         };
         clon.children[0].id = "side-button-id-"+Game.GravityBodiesDict[bodyId].id;
 
-        document.getElementById("plus_button1").onclick = () => {
-            var id = game.scene.getScene("game").createBody({name: "Untitled" + untitledNums, preset_name: "Earth"});
-            untitledNums++;
-            this.parentObj.insertLast();
-            game.scene.getScene("UIScene").switchSideBar(id);
-        };
 
         document.getElementById("side-panel-id").appendChild(clon);
     }
