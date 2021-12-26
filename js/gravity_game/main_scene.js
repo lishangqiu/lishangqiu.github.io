@@ -7,6 +7,7 @@ const name_link = {
     "Sun": "assets/GravityGame/sun.png",
     "Venus": "assets/GravityGame/venus.png",
     "Mercury": "assets/GravityGame/mercury.png",
+    "Mars": "assets/GravityGame/mars.png",
     "_GraveStone": "assets/GravityGame/tombstone.png"
 }
 export {name_link};
@@ -21,6 +22,7 @@ export default class Game extends Phaser.Scene{
         Game.GravityBodiesDict = {};
         Game.paused = true;
         Game.allBodyIds = [];
+        this.currFollowing = null;
     }
 
     preload(){
@@ -59,21 +61,17 @@ export default class Game extends Phaser.Scene{
         this.input.on('pointermove', this.onPointerMove, this);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        this.createBody({preset_name: "Sun", name: "Sun"});
-        this.createBody({preset_name: "Earth", name: "Earth"});
-        this.createBody({preset_name: "Venus", name: "Venus"});
+        this.createBody({preset_name: "Sun", name: "Sun", lineColor: 0xff00ff});
+        this.createBody({preset_name: "Earth", name: "Earth", lineColor: 0x4B0082});
+        this.createBody({preset_name: "Venus", name: "Venus", lineColor: 0xF8F8FF});
+        this.createBody({preset_name: "Mercury", name: "Mercury", lineColor: 0xadd8e6});
         this.createBody({preset_name: "Custom", posX: -180e9, posY: 0, velocityX: 0, velocityY: -35000, 
-                   radius: 30.34e6, mass: 4.989e29, textureName: "Sun", name: "AnotherStar"});
+                   radius: 30.34e6, mass: 4.989e29, textureName: "Sun", name: "AnotherStar", lineColor:  0x00FFFF});
         //this.createBody({preset_name: "Custom", posX: 152.1e9, posY: 0, velocityX: -1000000, velocityY: 10000, radius: 6.73e6, mass: 5.972e24, textureName: "Earth", name: "test"});
-
-        // init
-        /*Game.GravityBodies.forEach(function(item, index, array) {
-            item.drawNewPos();
-        });*/
+        
+        this.add.circle(0, 0, 10, 0xff00ff);
 
         Game.gra = this.add.graphics();
-        Game.gra.lineStyle(5, 0xFF00FF, 1.0);
-        Game.gra.fillStyle(0xFFFFFF, 1.0);
     }
 
     update(){
@@ -84,6 +82,13 @@ export default class Game extends Phaser.Scene{
             Game.GravityBodies.forEach(function(item, index, array) {
                 item.drawNewPos(Game.allBodyIds);
             });
+        }
+
+        if (this.currFollowing != null){
+            this.cameras.main.startFollow(Game.GravityBodiesDict[this.currFollowing].sprite);
+        }
+        else{
+            this.cameras.main.stopFollow();
         }
     }
 
@@ -100,6 +105,7 @@ export default class Game extends Phaser.Scene{
                 textureName : options.textureName,
                 name: options.name,
                 preset_name: options.preset_name,
+                lineColor: Number(this.rainbowStop(Math.random()))
             };
         }
         else{
@@ -107,9 +113,9 @@ export default class Game extends Phaser.Scene{
                 sceneObj : this,
                 name: options.name,
                 preset_name: options.preset_name,
+                lineColor: Number(this.rainbowStop(Math.random()))
             };
         }
-        console.log(config.name);
 
         var obj = new GravityBody(config);
         obj.drawObjPos();
@@ -132,14 +138,26 @@ export default class Game extends Phaser.Scene{
             if (this.startX != null){
                 this.startX = null;
                 this.startY = null;
-                this.startScrollX = this.cameras.main.scrollX;
-                this.startScrollY = this.cameras.main.scrollY;
             }
+            this.startScrollX = this.cameras.main.scrollX;
+            this.startScrollY = this.cameras.main.scrollY;
         }
     }
 
     fullScreen(){
         this.scale.toggleFullscreen();
+    }
+    rainbowStop_(h) 
+    {
+      let f= (n,k=(n+h*12)%12) => .5-.5*Math.max(Math.min(k-3,9-k,1),-1);  
+      let rgb2hex = (r,g,b) => "0x"+[r,g,b].map(x=>Math.round(x*255).toString(16).padStart(2,0)).join('');
+      return ( rgb2hex(f(0), f(8), f(4)) );
+    }
+
+    rainbowStop(){
+        let hex;
+        while (hex == null || (0.299*R + 0.587*G + 0.114*B))
+        hex = this.rainbowStop(Math.random());
     }
 }
 
