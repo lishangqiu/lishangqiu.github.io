@@ -13,7 +13,7 @@ var middleX = SIZE_WIDTH_SCREEN/2;
 var middleY = SIZE_HEIGHT_SCREEN/2;
 
 var _idIndex = 0;
-export {resolutionTime, radiusUpscale};
+export {resolutionTime, radiusUpscale, screenScale};
 
 // pos vector(aphelion), velocity vector(mininum speed), radius, mass, texture name
 var presets = {

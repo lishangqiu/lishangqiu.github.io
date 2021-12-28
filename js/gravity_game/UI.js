@@ -38,8 +38,8 @@ export default class UIScene extends Phaser.Scene{
     create(){
         this.cameras.main.setZoom(1);
         this.scale.fullscreenTarget = document.getElementById("game");
-        this.add.text(20, 10, 
-            "Scale: 5x10^10 meters/pixel\n\nRadius are upscaled by: " + radiusUpscale + "x for visibility\n");
+        this.scaleText = this.add.text(20, 10, 
+            );
 
         this.fullScreenButton = this.add.sprite(1400, 60, "fullscreen_button").setOrigin(0.5, 0.5).setInteractive({useHandCursor: true});
         this.fullScreenButton.displayWidth = 32; // times two for diameter(scaling the image)
@@ -90,6 +90,7 @@ export default class UIScene extends Phaser.Scene{
             this.timeSpent += resolutionTime*GravityBody.simTimes;
         }
 
+        this.scaleText.text = "Scale: " + Game.currScale_.toExponential(3) + " meters/pixel\n\nRadius are upscaled by: " + radiusUpscale + "x for visibility\n"
         this.earthDaysText.text = "Earth days: " + (this.timeSpent/86400).toFixed(0);
         this.sidePanelObj.update();
 

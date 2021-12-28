@@ -1,4 +1,5 @@
 import GravityBody from "./gravity_body.js"
+import { screenScale } from "./gravity_body.js";
 import {MIN_ZOOM, MAX_ZOOM, SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
 import { game } from "./main.js";
 
@@ -23,6 +24,7 @@ export default class Game extends Phaser.Scene{
         Game.paused = true;
         Game.allBodyIds = [];
         this.currFollowing = null;
+        Game.currScale_ = 1/ screenScale;
     }
 
     preload(){
@@ -53,6 +55,8 @@ export default class Game extends Phaser.Scene{
             
             camera.setZoom(newZoom);
             Game.currZoom = newZoom;
+            console.log(Game.currZoom);
+            Game.currScale_ = 1/ (screenScale * camera.zoom);
         });
 
         this.startScrollX = this.cameras.main.scrollX;
@@ -105,7 +109,7 @@ export default class Game extends Phaser.Scene{
                 textureName : options.textureName,
                 name: options.name,
                 preset_name: options.preset_name,
-                lineColor: Number(this.rainbowStop(Math.random()))
+                lineColor: Number(this.randomColor(   ))
             };
         }
         else{
@@ -113,7 +117,7 @@ export default class Game extends Phaser.Scene{
                 sceneObj : this,
                 name: options.name,
                 preset_name: options.preset_name,
-                lineColor: Number(this.rainbowStop(Math.random()))
+                lineColor: Number(this.randomColor())
             };
         }
 
@@ -147,12 +151,32 @@ export default class Game extends Phaser.Scene{
     fullScreen(){
         this.scale.toggleFullscreen();
     }
-    rainbowStop(h) 
-    {
-      let f= (n,k=(n+h*12)%12) => .5-.5*Math.max(Math.min(k-3,9-k,1),-1);  
-      let rgb2hex = (r,g,b) => "0x"+[r,g,b].map(x=>Math.round(x*255).toString(16).padStart(2,0)).join('');
-      return ( rgb2hex(f(0), f(8), f(4)) );
-    }
+    
+    hslToHex(h, s, l) {
+        l /= 100;
+        const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => {
+          const k = (n + h / 30) % 12;
+          const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+          return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+        };
+        return `0x${f(0)}${f(8)}${f(4)}`;
+      }
+    
+    randomColor = (() => {
+        "use strict";
+      
+        const randomInt = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+      
+        return () => {
+          var h = randomInt(0, 360);
+          var s = randomInt(42, 98);
+          var l = randomInt(40, 90);
+          return this.hslToHex(h, s, l);
+        };
+      })();
 }
 
 Game.setPaused = function(pause){
