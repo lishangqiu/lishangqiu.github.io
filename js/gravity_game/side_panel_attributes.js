@@ -83,6 +83,10 @@ export default class SidePanelAttribute{
             }
             this.fillInAttributes();
         }
+
+        document.getElementById("position-button").onclick = () => {
+            this.body.startPositionDrag();
+        }
     }
 
 

@@ -32,7 +32,8 @@ export default class Game extends Phaser.Scene{
         this.load.image('background', 'assets/GravityGame/background.jpg');
         Object.entries(name_link).map(([key, value]) => {
             this.load.image(key, value);
-        })
+        });
+        this.load.image("position", "assets/GravityGame/position.png");
     }
 
     create(){
@@ -76,6 +77,7 @@ export default class Game extends Phaser.Scene{
         this.add.circle(0, 0, 10, 0xff00ff);
 
         Game.gra = this.add.graphics();
+        this.pauseMoving = false;
     }
 
     update(){
@@ -130,21 +132,23 @@ export default class Game extends Phaser.Scene{
     }
 
     onPointerMove(pointer){
-        if (pointer.isDown && pointer.x>100)
-        {
-            if (this.startX == null){
-                this.startX = pointer.x;
-                this.startY = pointer.y;
+        if (!this.pauseMoving){
+            if (pointer.isDown && pointer.x>100)
+            {
+                if (this.startX == null){
+                    this.startX = pointer.x;
+                    this.startY = pointer.y;
+                }
+                this.cameras.main.setScroll(this.startScrollX - (pointer.x-this.startX) / Game.currZoom, this.startScrollY - (pointer.y-this.startY) / Game.currZoom);
             }
-            this.cameras.main.setScroll(this.startScrollX - (pointer.x-this.startX) / Game.currZoom, this.startScrollY - (pointer.y-this.startY) / Game.currZoom);
-        }
-        else{
-            if (this.startX != null){
-                this.startX = null;
-                this.startY = null;
+            else{
+                if (this.startX != null){
+                    this.startX = null;
+                    this.startY = null;
+                }
+                this.startScrollX = this.cameras.main.scrollX;
+                this.startScrollY = this.cameras.main.scrollY;
             }
-            this.startScrollX = this.cameras.main.scrollX;
-            this.startScrollY = this.cameras.main.scrollY;
         }
     }
 

@@ -157,13 +157,17 @@ export default class GravityBody{
         this.sprite.displayWidth = radius * screenScale * radiusUpscale *2; // times two for diameter(scaling the image)
         this.sprite.scaleY = this.sprite.scaleX;
 
-        this.sprite.on('pointerdown', () => {this.sceneObj.scene.get("UIScene").switchSideBar(this.id)});
-        this.sprite.on('pointerout', () => {this.sprite.clearTint()});
-        this.sprite.on('pointerover', () => {this.sprite.setTint(0xa5a5a5 );});
+        this.setPointer();
 
         this.label = this.sceneObj.add.text(-1, -1, this.name, {color:"#3fc6f3"}); 
         this.label.setFontSize(17);
         this.label.depth = 1;
+    }
+
+    setPointer(){
+        this.sprite.on('pointerdown', () => {this.sceneObj.scene.get("UIScene").switchSideBar(this.id)});
+        this.sprite.on('pointerout', () => {this.sprite.clearTint()});
+        this.sprite.on('pointerover', () => {this.sprite.setTint(0xa5a5a5 );});
     }
 
     getAngleDisplacements(radius){
@@ -206,6 +210,7 @@ export default class GravityBody{
     }
 
     setSpriteIcon(textureName){
+        this.textureName = textureName;
         this.sprite.setTexture(textureName);
     }
 
@@ -219,6 +224,37 @@ export default class GravityBody{
         this.sprite.setAlpha(1);
         this.label.setAlpha(1);
         this.invisible = false;
+    }
+
+    startPositionDrag(){
+        Game.setPaused(true);
+
+        var posSprite = this.sceneObj.add.sprite(this.sprite.x, this.sprite.y, "position").setInteractive({cursor: 'pointer'});
+        posSprite.displayWidth = 30; // times two for diameter(scaling the image)
+        posSprite.scaleY = posSprite.scaleX;
+        posSprite.setInteractive({cursor: 'pointer'});
+
+        posSprite.on('pointerout', () => {posSprite.clearTint()});
+        posSprite.on('pointerover', () => {posSprite.setTint(0xa5a5a5);});
+        
+        game.scene.getScene("game").input.setDraggable(posSprite);
+
+        game.scene.getScene("game").input.on('drag', (pointer, gameObject, dragX, dragY) => {
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+
+            this.sprite.x = gameObject.x;
+            this.sprite.y = gameObject.y;
+
+            var diplacements = this.getAngleDisplacements(this.radius * screenScale * radiusUpscale);
+            this.label.setPosition(this.sprite.x - diplacements[0], this.sprite.y - diplacements[1] - this.label.displayHeight);
+        });
+
+        game.scene.getScene("game").pauseMoving = true;
+    }
+
+    stopPositionDrag(){
+
     }
 }
 
