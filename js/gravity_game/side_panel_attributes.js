@@ -1,6 +1,7 @@
 import Game from "./main_scene.js"
 import {game} from "./main.js"
 import { name_link } from "./main_scene.js";
+import { presets } from "./gravity_body.js";
 
 export default class SidePanelAttribute{
     constructor(){
@@ -11,7 +12,7 @@ export default class SidePanelAttribute{
         () => {return this.body.pos.y}, (val) => {this.body.setPosY(val);}, 0.001);
 
         this.directionObj = new NumberAttributeObj(document.getElementById("direction-attributes"), 
-        () => {return this.body.velocity.direction()}, (val) => {this.body.setDirection(val)}, 1);
+        () => {return this.body.velocity.direction()}, (val) => {this.body.setDirection(val)}, (180/Math.PI));
 
         this.speedObj = new NumberAttributeObj(document.getElementById("speed-attributes"), 
         () => {return this.body.velocity.magnitude()}, (val) => {this.body.setMagnitude(val)}, 0.001);
@@ -47,6 +48,13 @@ export default class SidePanelAttribute{
         this.speedObj.updateValue(); 
         this.radiusObj.updateValue();
         this.massObj.updateValue();
+
+        if (this.body != null){
+            if (this.body.preset != "Custom" && !this.checkWithPreset(this.body.preset)){
+                document.getElementById("preset-list-attributes").value = "Custom";
+                this.body.preset = "Custom";
+            }
+        }
     }
 
     addListeners(){
@@ -60,9 +68,12 @@ export default class SidePanelAttribute{
         this.massObj.addListeners();
         document.getElementById('icon-list-attributes').onchange = (val) => {this.body.setSpriteIcon(val.target.value);this.fillInAttributes();};
         document.getElementById("preset-list-attributes").onchange = (val) => {
-            this.body.updatePreset(val.target.value);
-            this.fillInAttributes();
-            game.scene.getScene("UIScene").sidePanelObj.buttonsID[this.bodyId].updateIcon(val.target.value);
+            console.log(val.target.value);
+            if (val.target.value != "Custom"){
+                this.body.updatePreset(val.target.value);
+                this.fillInAttributes();
+                game.scene.getScene("UIScene").sidePanelObj.buttonsID[this.bodyId].updateIcon(val.target.value);
+            }
         };
         document.getElementById("follow-button").onclick = () => {
             if (game.scene.getScene("game").currFollowing == this.bodyId){
@@ -85,6 +96,9 @@ export default class SidePanelAttribute{
         }
 
         document.getElementById("position-button").onclick = () => {
+            if (game.scene.getScene("game").currMoving != null){
+                game.scene.getScene("game").currMoving.stopPositionDrag();
+            }
             this.body.startPositionDrag();
         }
     }
@@ -141,6 +155,29 @@ export default class SidePanelAttribute{
             document.getElementById("appear-button").innerText = targetStr;
         }
     }
+
+    checkWithPreset(presetName){
+        let pos = presets[presetName][0];
+        let velocity = presets[presetName][1];
+        let radius = presets[presetName][2];
+        let mass = presets[presetName][3];
+        let textureName = presets[presetName][4];
+
+        // SPAGHETTIIIII WARNING!!!!
+        if (this.withinError(pos.x, this.posXObj.getFunc(), 1e3) && this.withinError(pos.y, this.posYObj.getFunc(), 1e3)
+        && this.withinError(velocity.direction(), this.directionObj.getFunc(), 0.00005) && this.withinError(velocity.magnitude(), this.speedObj.getFunc(), 0.01)
+        && this.withinError(radius, this.radiusObj.getFunc(), 0.01) && this.withinError(mass, this.massObj.getFunc(), 1e10) && textureName == this.body.sprite.texture.key){
+            return true;
+        }
+        return false;
+    }
+
+    withinError(target, value, allowance){
+        if (Math.abs((Math.abs(target) - Math.abs(value))) < allowance){
+            return true;
+        }
+        return false;
+    }
 }
 
 class NumberAttributeObj{
@@ -150,6 +187,7 @@ class NumberAttributeObj{
         this.setFunc = setFunc;
         this.unitMultiply = unitMultiply;
     }
+
 
     fillInAttributes(){
         let num = (this.getFunc()*this.unitMultiply);

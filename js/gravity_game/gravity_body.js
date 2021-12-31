@@ -1,6 +1,7 @@
 import Game from "./main_scene.js";
 import {game} from "./main.js"
 import { SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
+import Arrow from "./arrow.js"
 
 const gravitationalConstant = 6.67428e-11;
 //const screenScale = 0.00000470883; // pixel/meter
@@ -24,6 +25,8 @@ var presets = {
     "Mars": [new Victor(249.261e9, 0), new Victor(0, -21970), 3.3895e6, 0.64169e24, "Mars"],
 
 }
+
+export {presets};
 
 export default class GravityBody{
     // starting_pos(note coordinates start from the center as 0,0), starting_velocity, radius, (density or mass) in SI units
@@ -143,6 +146,9 @@ export default class GravityBody{
             this.simGravity();
         }
         this.drawObjPos();
+        this.arrow.setPosition(this.sprite.x, this.sprite.y);
+        this.arrow.setAngle(this.velocity.direction()/Math.PI*180 + 90);
+        this.arrow.setNewHeight(this.velocity.magnitude() * screenScale * 60 * 10000);
     }
 
     drawObjPos(){
@@ -150,6 +156,8 @@ export default class GravityBody{
 
         var diplacements = this.getAngleDisplacements(this.radius * screenScale * radiusUpscale);
         this.label.setPosition(this.sprite.x - diplacements[0], this.sprite.y - diplacements[1] - this.label.displayHeight);
+        this.arrow.setPosition(this.sprite.x, this.sprite.y);
+        this.arrow.setNewHeight(this.velocity.magnitude() * screenScale * 60 * 10000);
     }
 
     initDraw(radius, textureName){
@@ -162,6 +170,9 @@ export default class GravityBody{
         this.label = this.sceneObj.add.text(-1, -1, this.name, {color:"#3fc6f3"}); 
         this.label.setFontSize(17);
         this.label.depth = 1;
+        this.label.setScale(this.label.scale * (1 / this.sceneObj.cameras.main.zoom));
+
+        this.arrow = new Arrow(this.sceneObj);
     }
 
     setPointer(){
@@ -177,14 +188,17 @@ export default class GravityBody{
     deleteItem(){
         this.sprite.destroy(true);
         this.label.destroy(true);
+        this.arrow.destroy();
     }
 
     setDirection(direction){
         this.velocity = MDToVictor(this.velocity.magnitude(), direction);
+        this.arrow.setAngle(this.velocity.direction()/Math.PI*180 + 90);
     }
 
     setMagnitude(magnitude){
         this.velocity = MDToVictor(magnitude, this.velocity.direction());
+        this.arrow.setNewHeight(this.velocity.magnitude() * screenScale * 60 * 10000);
     }
 
     setRadius(radius){
@@ -196,11 +210,19 @@ export default class GravityBody{
     setPosX(x){
         this.pos.x = x;
         this.drawObjPos();
+
+        if (this.posSprite != null){
+            this.posSprite.x = x * screenScale + middleX;
+        }
     }
 
     setPosY(y){
         this.pos.y = y;
         this.drawObjPos();
+
+        if (this.posSprite != null){
+            this.posSprite.y = y * screenScale + middleY;
+        }
     }
 
     updateName(name){
@@ -229,15 +251,15 @@ export default class GravityBody{
     startPositionDrag(){
         Game.setPaused(true);
 
-        var posSprite = this.sceneObj.add.sprite(this.sprite.x, this.sprite.y, "position").setInteractive({cursor: 'pointer'});
-        posSprite.displayWidth = 30; // times two for diameter(scaling the image)
-        posSprite.scaleY = posSprite.scaleX;
-        posSprite.setInteractive({cursor: 'pointer'});
+        this.posSprite = this.sceneObj.add.sprite(this.sprite.x, this.sprite.y, "position").setInteractive({cursor: 'pointer'});
+        this.posSprite.displayWidth = 30; // times two for diameter(scaling the image)
+        this.posSprite.scaleY = this.posSprite.scaleX;
+        this.posSprite.setInteractive({cursor: 'pointer'});
 
-        posSprite.on('pointerout', () => {posSprite.clearTint()});
-        posSprite.on('pointerover', () => {posSprite.setTint(0xa5a5a5);});
+        this.posSprite.on('pointerout', () => {this.posSprite.clearTint(); game.scene.getScene("game").currDragging = false;});
+        this.posSprite.on('pointerover', () => {this.posSprite.setTint(0xa5a5a5);game.scene.getScene("game").currDragging = true;});
         
-        game.scene.getScene("game").input.setDraggable(posSprite);
+        game.scene.getScene("game").input.setDraggable(this.posSprite);
 
         game.scene.getScene("game").input.on('drag', (pointer, gameObject, dragX, dragY) => {
             gameObject.x = dragX;
@@ -246,15 +268,29 @@ export default class GravityBody{
             this.sprite.x = gameObject.x;
             this.sprite.y = gameObject.y;
 
+            this.pos.x = (this.sprite.x - middleX) / screenScale;
+            this.pos.y = (this.sprite.y - middleY) / screenScale;
+
             var diplacements = this.getAngleDisplacements(this.radius * screenScale * radiusUpscale);
             this.label.setPosition(this.sprite.x - diplacements[0], this.sprite.y - diplacements[1] - this.label.displayHeight);
+
+            this.arrow.setPosition(this.sprite.x, this.sprite.y);
+
+            game.scene.getScene("UIScene").attributesPanelObj.update();
+            
         });
 
-        game.scene.getScene("game").pauseMoving = true;
+        game.scene.getScene("game").currMoving = this;
+        this.sprite.setAlpha(0.5);
     }
 
     stopPositionDrag(){
+        this.posSprite.destroy(true);
+        this.posSprite = null;
+        game.scene.getScene("game").currMoving = null;
+        this.sprite.setAlpha(1);
 
+        game.scene.getScene("game").input.off("drag");
     }
 }
 

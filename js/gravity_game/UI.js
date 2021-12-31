@@ -114,7 +114,7 @@ export default class UIScene extends Phaser.Scene{
         //this.input.on('pointerdown', () => {clearSelection();}, this);
         
         this.debug.setText([
-            'Duration: ' + game.loop.actualFps
+            'FPS: ' + game.loop.actualFps
         ]);
     }
 

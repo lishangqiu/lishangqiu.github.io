@@ -14,11 +14,12 @@
 
 #panel-id-body button{
     font-size: 16px;
-    margin-left: 20px; 
+    margin-left: 60px; 
     padding-left: 13px; 
     padding-right: 13px; 
     padding-top: 2px; 
     padding-bottom: 2px;
+    margin-right: 10px;
 }
 
 #panel-id-body button:hover{

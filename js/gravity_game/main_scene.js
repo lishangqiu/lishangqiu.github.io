@@ -24,6 +24,8 @@ export default class Game extends Phaser.Scene{
         Game.paused = true;
         Game.allBodyIds = [];
         this.currFollowing = null;
+        this.currDragging = false;
+        this.currMoving = null;
         Game.currScale_ = 1/ screenScale;
     }
 
@@ -56,7 +58,6 @@ export default class Game extends Phaser.Scene{
             
             camera.setZoom(newZoom);
             Game.currZoom = newZoom;
-            console.log(Game.currZoom);
             Game.currScale_ = 1/ (screenScale * camera.zoom);
         });
 
@@ -77,7 +78,6 @@ export default class Game extends Phaser.Scene{
         this.add.circle(0, 0, 10, 0xff00ff);
 
         Game.gra = this.add.graphics();
-        this.pauseMoving = false;
     }
 
     update(){
@@ -88,6 +88,10 @@ export default class Game extends Phaser.Scene{
             Game.GravityBodies.forEach(function(item, index, array) {
                 item.drawNewPos(Game.allBodyIds);
             });
+            if (this.currMoving != null){
+                this.currMoving.stopPositionDrag();
+            }
+
         }
 
         if (this.currFollowing != null){
@@ -132,8 +136,8 @@ export default class Game extends Phaser.Scene{
     }
 
     onPointerMove(pointer){
-        if (!this.pauseMoving){
-            if (pointer.isDown && pointer.x>100)
+        if (!this.currDragging){
+            if (pointer.isDown && pointer.x>100 && pointer.x<1500)
             {
                 if (this.startX == null){
                     this.startX = pointer.x;
