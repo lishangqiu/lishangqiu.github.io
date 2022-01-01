@@ -1,7 +1,6 @@
 import GravityBody from "./gravity_body.js"
 import { screenScale } from "./gravity_body.js";
 import {MIN_ZOOM, MAX_ZOOM, SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
-import { game } from "./main.js";
 
 const name_link = {
     "Earth": "assets/GravityGame/earth.png",
@@ -9,6 +8,7 @@ const name_link = {
     "Venus": "assets/GravityGame/venus.png",
     "Mercury": "assets/GravityGame/mercury.png",
     "Mars": "assets/GravityGame/mars.png",
+    "Jupiter": "assets/GravityGame/jupiter2.png",
     "_GraveStone": "assets/GravityGame/tombstone.png"
 }
 export {name_link};

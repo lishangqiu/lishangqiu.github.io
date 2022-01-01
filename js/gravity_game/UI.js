@@ -90,7 +90,7 @@ export default class UIScene extends Phaser.Scene{
             this.timeSpent += resolutionTime*GravityBody.simTimes;
         }
 
-        this.scaleText.text = "Scale: " + Game.currScale_.toExponential(3) + " meters/pixel\n\nRadius are upscaled by: " + radiusUpscale + "x for visibility\n"
+        this.scaleText.text = "Scale: " + Game.currScale_.toExponential(3) + " meters/pixel\nRadius are upscaled by: " + radiusUpscale + "x for visibility\n\nNote: Bodies too small is replaced by a dot."
         this.earthDaysText.text = "Earth days: " + (this.timeSpent/86400).toFixed(0);
         this.sidePanelObj.update();
 

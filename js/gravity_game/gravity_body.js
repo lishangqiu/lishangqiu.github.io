@@ -6,8 +6,8 @@ import Arrow from "./arrow.js"
 const gravitationalConstant = 6.67428e-11;
 //const screenScale = 0.00000470883; // pixel/meter
 const screenScale = 0.000000002; // pixel/meter
-const resolutionTime = 4000/20; // simulated second/frame
-const radiusUpscale = 300;
+const resolutionTime = 200; // simulated second/frame
+const radiusUpscale = 10;
 const labelDegree = -225;
 
 var middleX = SIZE_WIDTH_SCREEN/2;
@@ -18,11 +18,12 @@ export {resolutionTime, radiusUpscale, screenScale};
 
 // pos vector(aphelion), velocity vector(mininum speed), radius, mass, texture name
 var presets = {
-    "Sun": [new Victor(0, 0), new Victor(0, 0), 69.34e6, 1.989e30, "Sun"],
+    "Sun": [new Victor(0, 0), new Victor(0, 0), 695700e3, 1.989e30, "Sun"],
     "Mercury": [new Victor(69.817e9, 0), new Victor(0,-38860), 2.439766e6, 0.33010e24, "Mercury"],
     "Venus": [new Victor(108.939e9, 0), new Victor(0, -34790), 6.05177718e6, 4.867e24, "Venus"],
     "Earth": [new Victor(152.1e9, 0), new Victor(0, -29290), 6.73e6, 5.972e24, "Earth"],
     "Mars": [new Victor(249.261e9, 0), new Victor(0, -21970), 3.3895e6, 0.64169e24, "Mars"],
+    "Jupiter": [new Victor(816.363e9, 0), new Victor(0, -12440), 69911000,	1898.13e24, "Jupiter"],
 
 }
 
@@ -72,6 +73,7 @@ export default class GravityBody{
         this.radius = presets[presetName][2];
         this.mass = presets[presetName][3];
         this.textureName = presets[presetName][4];
+        console.log(this.textureName);
     }
 
     updatePreset(presetName){
@@ -153,7 +155,7 @@ export default class GravityBody{
 
     drawObjPos(){
         this.sprite.setPosition(this.pos.x * screenScale + middleX, this.pos.y * screenScale + middleY);
-
+        this.ball.setPosition(this.sprite.x, this.sprite.y); 
         var diplacements = this.getAngleDisplacements(this.radius * screenScale * radiusUpscale);
         this.label.setPosition(this.sprite.x - diplacements[0], this.sprite.y - diplacements[1] - this.label.displayHeight);
         this.arrow.setPosition(this.sprite.x, this.sprite.y);
@@ -161,6 +163,7 @@ export default class GravityBody{
     }
 
     initDraw(radius, textureName){
+        this.ball = this.sceneObj.add.circle(100, 100, 4, 0x00ffff );
         this.sprite = this.sceneObj.add.sprite(-1, -1, textureName).setInteractive({cursor: 'pointer'});
         this.sprite.displayWidth = radius * screenScale * radiusUpscale *2; // times two for diameter(scaling the image)
         this.sprite.scaleY = this.sprite.scaleX;
