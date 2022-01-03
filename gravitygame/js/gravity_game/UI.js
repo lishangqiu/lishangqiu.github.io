@@ -47,12 +47,6 @@ export default class UIScene extends Phaser.Scene{
         this.fullScreenButton.on("pointerover", () => this.fullScreenButton.setTint(0xafafaf)).on("pointerout", () => this.fullScreenButton.setTint(0xffffff));
         this.fullScreenButton.on('pointerdown', () => {
             game.scene.getScene("game").fullScreen();
-            if (this.fullScreenButton.texture.key == "fullscreen_button"){
-                this.fullScreenButton.setTexture("unfullscreen_button");
-            }
-            else{
-                this.fullScreenButton.setTexture("fullscreen_button");
-            }
         });
 
         //this.simSpeedText = this.add.text(-1, 1000, 
@@ -90,7 +84,7 @@ export default class UIScene extends Phaser.Scene{
             this.timeSpent += resolutionTime*GravityBody.simTimes;
         }
 
-        this.scaleText.text = "Scale: " + Game.currScale_.toExponential(3) + " meters/pixel\nRadius are upscaled by: " + radiusUpscale + "x for visibility\n\nNote: Bodies too small is replaced by a dot."
+        this.scaleText.text = "Scale: " + Game.currScale_.toExponential(3) + " meters/pixel\nRadius are upscaled by: " + radiusUpscale/2 + "x for visibility\n\nNote: Objects too small is replaced by a dot."
         this.earthDaysText.text = "Earth days: " + (this.timeSpent/86400).toFixed(0);
         this.sidePanelObj.update();
 

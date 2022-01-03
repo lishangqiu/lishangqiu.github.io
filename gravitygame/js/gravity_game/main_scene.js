@@ -1,6 +1,7 @@
 import GravityBody from "./gravity_body.js"
 import { screenScale } from "./gravity_body.js";
 import {MIN_ZOOM, MAX_ZOOM, SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from './config.js'
+import {game} from "./main.js"
 
 const name_link = {
     "Earth": "assets/GravityGame/earth.png",
@@ -74,8 +75,6 @@ export default class Game extends Phaser.Scene{
         this.createBody({preset_name: "Custom", posX: -180e9, posY: 0, velocityX: 0, velocityY: -35000, 
                    radius: 30.34e6, mass: 4.989e29, textureName: "Sun", name: "AnotherStar", lineColor:  0x00FFFF});
         //this.createBody({preset_name: "Custom", posX: 152.1e9, posY: 0, velocityX: -1000000, velocityY: 10000, radius: 6.73e6, mass: 5.972e24, textureName: "Earth", name: "test"});
-        
-        this.add.circle(0, 0, 10, 0xff00ff);
 
         Game.gra = this.add.graphics();
     }
@@ -158,6 +157,12 @@ export default class Game extends Phaser.Scene{
 
     fullScreen(){
         this.scale.toggleFullscreen();
+        if (game.scene.getScene("UIScene").fullScreenButton.texture.key == "fullscreen_button"){
+            game.scene.getScene("UIScene").fullScreenButton.setTexture("unfullscreen_button");
+        }
+        else{
+            game.scene.getScene("UIScene").fullScreenButton.setTexture("fullscreen_button");
+        }
     }
     
     hslToHex(h, s, l) {

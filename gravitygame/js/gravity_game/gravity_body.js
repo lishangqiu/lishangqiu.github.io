@@ -7,7 +7,7 @@ const gravitationalConstant = 6.67428e-11;
 //const screenScale = 0.00000470883; // pixel/meter
 const screenScale = 0.000000002; // pixel/meter
 const resolutionTime = 200; // simulated second/frame
-const radiusUpscale = 10;
+const radiusUpscale = 20;
 const labelDegree = -225;
 
 var middleX = SIZE_WIDTH_SCREEN/2;
@@ -24,7 +24,6 @@ var presets = {
     "Earth": [new Victor(152.1e9, 0), new Victor(0, -29290), 6.73e6, 5.972e24, "Earth"],
     "Mars": [new Victor(249.261e9, 0), new Victor(0, -21970), 3.3895e6, 0.64169e24, "Mars"],
     "Jupiter": [new Victor(816.363e9, 0), new Victor(0, -12440), 69911000,	1898.13e24, "Jupiter"],
-
 }
 
 export {presets};
@@ -276,7 +275,7 @@ export default class GravityBody{
 
             var diplacements = this.getAngleDisplacements(this.radius * screenScale * radiusUpscale);
             this.label.setPosition(this.sprite.x - diplacements[0], this.sprite.y - diplacements[1] - this.label.displayHeight);
-
+            this.ball.setPosition(this.sprite.x, this.sprite.y);
             this.arrow.setPosition(this.sprite.x, this.sprite.y);
 
             game.scene.getScene("UIScene").attributesPanelObj.update();

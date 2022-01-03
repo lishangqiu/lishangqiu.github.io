@@ -1,0 +1,68 @@
+nav {
+    background-color: #203647 !important;
+    border-color: #203647 !important;
+    font-family: 'Source Sans Pro', sans-serif !important;
+    margin: 0px !important;
+}
+
+.navbar a{
+    color: #EEFBFB !important;
+    background-color: #203647 !important;
+}
+
+#games-dropdown a{
+    font-size: 1.3em !important;
+}
+
+#games-dropdown > .dropdown-menu a{
+    background-color: #1e3444 !important;
+    color: #EEFBFB !important;
+    font-size: 1.1em !important;
+}
+
+.dropdown-menu{
+    background-color: #1e3444;
+}
+
+#games-dropdown > .dropdown-menu a:hover{
+    background-color: #304e64 !important;
+    color: #EEFBFB !important;
+}
+
+
+
+#panel-id-body input, button{
+    background-color: #272626; 
+    border-color: black; 
+    border-width: 1.5px; 
+    border-radius: 4px;
+    font-size: 15px;
+    border-style: solid; 
+}
+
+#panel-id-body input{
+    width: 170px; 
+    height: 29px; 
+}
+
+#panel-id-body button{
+    font-size: 16px;
+    margin-left: 60px; 
+    padding-left: 13px; 
+    padding-right: 13px; 
+    padding-top: 2px; 
+    padding-bottom: 2px;
+    margin-right: 10px;
+}
+
+#panel-id-body button:hover{
+    background-color: #1a1a1a; 
+}
+
+#panel-id-body label{
+    font-size: 17px;
+}
+
+#panel-id-body span{
+    font-size: 16px;
+}
