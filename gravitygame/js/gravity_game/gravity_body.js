@@ -7,7 +7,9 @@ const gravitationalConstant = 6.67428e-11;
 //const screenScale = 0.00000470883; // pixel/meter
 const screenScale = 0.000000002; // pixel/meter
 const resolutionTime = 200; // simulated second/frame
-const radiusUpscale = 20;
+const radiusUpscaleNormal = 2;
+const radiusUpscaleEnlarged = 20;
+var radiusUpscale = 2;
 const labelDegree = -225;
 
 var middleX = SIZE_WIDTH_SCREEN/2;
@@ -159,6 +161,25 @@ export default class GravityBody{
         this.label.setPosition(this.sprite.x - diplacements[0], this.sprite.y - diplacements[1] - this.label.displayHeight);
         this.arrow.setPosition(this.sprite.x, this.sprite.y);
         this.arrow.setNewHeight(this.velocity.magnitude() * screenScale * 60 * 10000);
+
+        if (Game.arrows){
+            if (!this.arrow.group.visible){
+                this.arrow.group.visible = true;
+            }
+        }
+        else{
+            if (this.arrow.group.visible){
+                this.arrow.group.visible = false;
+            }
+        }
+
+        if (Game.enlarged){
+            radiusUpscale = radiusUpscaleEnlarged;
+        }
+        else{
+            radiusUpscale = radiusUpscaleNormal;
+        }
+        this.setRadius(this.radius);
     }
 
     initDraw(radius, textureName){
@@ -191,6 +212,7 @@ export default class GravityBody{
         this.sprite.destroy(true);
         this.label.destroy(true);
         this.arrow.destroy();
+        this.ball.destroy(true);
     }
 
     setDirection(direction){

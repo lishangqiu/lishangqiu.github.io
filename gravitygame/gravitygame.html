@@ -11,7 +11,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <style>
             body{
-                background: #010a11;
+                background-color: #010a11;
             }
         </style>
 
@@ -34,6 +34,15 @@
             </ul>
         </nav>
         <h1 style="text-align: center; color: white">Gravity Game</h1>
+        <p style="text-align: center; color: rgb(216, 216, 216); font-size: 15px;">
+            <b>Controls: </b>Left button drag - pan around;  Scroll - zoom in/out;  Add/edit objects on side panel(click on the panel thing for each object to edit); 
+            <br>
+            <b>Tip: </b>Use "Visible" button on the top of the side panel to make object disappear/appear out of thin air.
+            <br>
+            <b>I highly recommend going full screen. </b>
+            Also, here's how the game do the maths: 
+            <a href="https://github.com/lishangqiu/lishangqiu.github.io/blob/master/gravitygame/gravitygame.md">link</a>
+        </p>
         <div  id="game">
 
         </div>
@@ -41,12 +50,6 @@
         <script type="text/javascript" src="js/gravity_game/phaser.js"></script>
         <script type="text/javascript" src="js/gravity_game/victor.js"></script>
         <script src='js/gravity_game/main.js' type='module'></script>
-
-        <div class="panel panel-default" style="width: 1670px; margin: auto;">
-            <div class="panel-body">
-                Note: I highly recommend going full screen. Also, here's how the game works: <a href="https://github.com/lishangqiu/lishangqiu.github.io/blob/master/gravitygame.md">link</a>
-            </div>
-        </div>
 
         <template id="gravity-body">
             <div>

@@ -28,6 +28,8 @@ export default class Game extends Phaser.Scene{
         this.currDragging = false;
         this.currMoving = null;
         Game.currScale_ = 1/ screenScale;
+        Game.arrows = false;
+        Game.enlarged = false;
     }
 
     preload(){
@@ -73,7 +75,7 @@ export default class Game extends Phaser.Scene{
         this.createBody({preset_name: "Venus", name: "Venus", lineColor: 0xF8F8FF});
         this.createBody({preset_name: "Mercury", name: "Mercury", lineColor: 0xadd8e6});
         this.createBody({preset_name: "Custom", posX: -180e9, posY: 0, velocityX: 0, velocityY: -35000, 
-                   radius: 30.34e6, mass: 4.989e29, textureName: "Sun", name: "AnotherStar", lineColor:  0x00FFFF});
+                   radius: 50.34e7, mass: 4.989e29, textureName: "Sun", name: "AnotherStar", lineColor:  0x00FFFF});
         //this.createBody({preset_name: "Custom", posX: 152.1e9, posY: 0, velocityX: -1000000, velocityY: 10000, radius: 6.73e6, mass: 5.972e24, textureName: "Earth", name: "test"});
 
         Game.gra = this.add.graphics();
@@ -90,7 +92,6 @@ export default class Game extends Phaser.Scene{
             if (this.currMoving != null){
                 this.currMoving.stopPositionDrag();
             }
-
         }
 
         if (this.currFollowing != null){

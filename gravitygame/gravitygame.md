@@ -7,7 +7,10 @@ It also doesn't account for spin, tides, warping of time(?). The simulation is q
 
 It is also critically depent on the "time resolution". Sometimes if the objects are going too fast, they might teleport through each other.
 
- **EXCEPT from those**, it's quite accurate, if you go along with the *"everything's 2D/all orbits are flat"* assumptions. 
+ **EXCEPT from those**, it's pretty accurate, if you go along with the *"everything's 2D/all orbits are flat"* assumptions. 
+ 
+ One way it shows is I only entered all of the planet's aphelion(and correspondingly, the minimum speed). So if you watch closely, the computed 
+ maximum speed match quite accurately with the real maximum speed.
 
 
 ## How it works(math/physics side)
@@ -74,7 +77,9 @@ I used below libraries:
 ### Regrets:
 1. **Using Phaser.** It was quite the pain(comparitively). 
 
-   Although it was better than nothing, it's documentation(version 2 and 3 being mixed) wasn't the best ever. It has next to zero UI support. However, maybe I'm too harshly    judging it, since I was so used to Unity.
+   Although it was better than nothing, it's documentation(version 2 and 3 being mixed) wasn't the best ever. Most 
+   importnatly, it has next to zero UI support. Like you can't even have a checkbox without haveing to use DOM.
+   However, maybe I'm too harshly judging it, since I'm so used to Unity now.
 2. **Using javascript.** No more needed to be said. I probably should've used typescript or something.
 
 **However**, I'm pretty happy how this project came out. Although not the most original idea, it's a good topic for my first web game.

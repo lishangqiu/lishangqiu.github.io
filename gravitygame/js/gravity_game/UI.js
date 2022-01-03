@@ -33,6 +33,9 @@ export default class UIScene extends Phaser.Scene{
 
         UIScene.fullScreenButton = this.load.image("fullscreen_button", "assets/GravityGame/FullScreen.png");
         UIScene.unFullScreenButton = this.load.image("unfullscreen_button", "assets/GravityGame/UnFullScreen.png");
+
+        UIScene.checkedButton = this.load.image("checked_button", "assets/GravityGame/checkChecked.png");
+        UIScene.checkedButton = this.load.image("unchecked_button", "assets/GravityGame/checkUnchecked.png");
     }
 
     create(){
@@ -68,6 +71,38 @@ export default class UIScene extends Phaser.Scene{
 
         document.getElementById("home-attributes").onclick = ()=>{this.switchSideBar("main");game.scene.getScene("game").currFollowing = null;}
         this.debug = this.add.text(1000, 10, '', { font: '16px Courier', fill: '#00ff00' });
+
+        this.arrowButton = this.add.sprite(80, 980, "unchecked_button");
+        this.arrowButton.setInteractive({useHandCursor: true}).on("pointerdown", () => {
+            Game.arrows = !Game.arrows;
+            if (Game.arrows){
+                this.arrowButton.setTexture("checked_button");
+            }
+            else{
+                this.arrowButton.setTexture("unchecked_button");
+            }
+
+            Game.GravityBodies.forEach(function(item, index, array) {
+                item.drawObjPos(Game.allBodyIds);
+            });
+        });
+        this.add.text(110, 973, "Enable Arrows");
+
+        this.enlargeButton = this.add.sprite(80, 1010, "unchecked_button");
+        this.enlargeButton.setInteractive({useHandCursor: true}).on("pointerdown", () => {
+            Game.enlarged = !Game.enlarged;
+            if (Game.enlarged){
+                this.enlargeButton.setTexture("checked_button");
+            }
+            else{
+                this.enlargeButton.setTexture("unchecked_button");
+            }
+
+            Game.GravityBodies.forEach(function(item, index, array) {
+                item.drawObjPos(Game.allBodyIds);
+            });
+        });
+        this.add.text(110, 1000, "Enlarge Objects\n(mass doesn't change, only the visuals)");
     }
 
     update(){
