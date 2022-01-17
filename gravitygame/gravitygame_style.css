@@ -1,34 +1,46 @@
 nav {
-    background-color: #203647 !important;
-    border-color: #203647 !important;
+    background-color: #26445a !important;
+    border-color: #26445a !important;
     font-family: 'Source Sans Pro', sans-serif !important;
     margin: 0px !important;
 }
 
 .navbar a{
     color: #EEFBFB !important;
-    background-color: #203647 !important;
+}
+.navbar-header a{
+    font-size: 1.45em !important;
 }
 
-#games-dropdown a{
-    font-size: 1.3em !important;
+.nav .btn{
+    font-size: 1.23em !important;
+}
+
+.nav .btn:hover{
+    background-color: #2c4c63 !important;
+}
+.nav .btn:active{
+    background-color: #2c4c63 !important;
+}
+.nav .btn:visited{
+    background-color: #2c4c63 !important;
 }
 
 #games-dropdown > .dropdown-menu a{
-    background-color: #1e3444 !important;
-    color: #EEFBFB !important;
-    font-size: 1.1em !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 1.2em !important;
+    font-weight: 200;
 }
 
 .dropdown-menu{
-    background-color: #1e3444;
+    background-color: #ffffff;
 }
 
 #games-dropdown > .dropdown-menu a:hover{
-    background-color: #304e64 !important;
-    color: #EEFBFB !important;
+    background-color: #d1d1d1 !important;
+    color: #000000 !important;
 }
-
 
 
 #panel-id-body input, button{
