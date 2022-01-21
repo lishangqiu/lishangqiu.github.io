@@ -4,39 +4,30 @@ nav {
     font-family: 'Source Sans Pro', sans-serif !important;
     margin: 0px !important;
 }
-
 .navbar a{
     color: #EEFBFB !important;
 }
 .navbar-header a{
     font-size: 1.45em !important;
 }
-
-.nav .btn{
+.nav-item{
     font-size: 1.23em !important;
 }
-
-.nav .btn:hover{
-    background-color: #2c4c63 !important;
+.nav-item a:hover{
+    background-color: #335369 !important;
 }
-.nav .btn:active{
-    background-color: #2c4c63 !important;
+.nav-item a:active{
+    background-color: #335369 !important;
 }
-.nav .btn:visited{
-    background-color: #2c4c63 !important;
+.nav-item a:visited{
+    background-color: #335369 !important;
 }
-
 #games-dropdown > .dropdown-menu a{
     background-color: #ffffff !important;
     color: #000000 !important;
     font-size: 1.2em !important;
     font-weight: 200;
 }
-
-.dropdown-menu{
-    background-color: #ffffff;
-}
-
 #games-dropdown > .dropdown-menu a:hover{
     background-color: #d1d1d1 !important;
     color: #000000 !important;
