@@ -178,14 +178,13 @@ export default class GravityBody{
         if (Game.enlarged){
             this.radiusUpscale = radiusUpscaleEnlarged;
             if ((this.radius * screenScale * this.radiusUpscale * 2) < radiusEnlargeUpscaleCutoff){
-                console.log("hoasdf");
                 this.radiusUpscale = radiusEnlargeUpscaleCutoff / (2 * screenScale * this.radius);
             }
         }
         else{
             this.radiusUpscale = radiusUpscaleNormal;
         }
-        
+
         this.setRadius(this.radius);
     }
 
