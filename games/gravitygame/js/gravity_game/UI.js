@@ -1,6 +1,6 @@
 import SliderUI from "./slider.js"
 import GravityBody from "./gravity_body.js";
-import {resolutionTime, radiusUpscale} from "./gravity_body.js"
+import {resolutionTime} from "./gravity_body.js"
 import {SCREEN_SCALE_INCREASE, SIZE_WIDTH_SCREEN, SIZE_HEIGHT_SCREEN } from "./config.js"
 import Game from "./main_scene.js"
 import SidePanel from "./side_panel.js";
@@ -72,7 +72,7 @@ export default class UIScene extends Phaser.Scene{
         document.getElementById("home-attributes").onclick = ()=>{this.switchSideBar("main");game.scene.getScene("game").currFollowing = null;}
         this.debug = this.add.text(1000, 10, '', { font: '16px Courier', fill: '#00ff00' });
 
-        this.arrowButton = this.add.sprite(80, 980, "unchecked_button");
+        this.arrowButton = this.add.sprite(80, 980, "checked_button");
         this.arrowButton.setInteractive({useHandCursor: true}).on("pointerdown", () => {
             Game.arrows = !Game.arrows;
             if (Game.arrows){
@@ -88,7 +88,7 @@ export default class UIScene extends Phaser.Scene{
         });
         this.add.text(110, 973, "Enable Arrows");
 
-        this.enlargeButton = this.add.sprite(80, 1010, "unchecked_button");
+        this.enlargeButton = this.add.sprite(80, 1010, "checked_button");
         this.enlargeButton.setInteractive({useHandCursor: true}).on("pointerdown", () => {
             Game.enlarged = !Game.enlarged;
             if (Game.enlarged){
@@ -118,8 +118,14 @@ export default class UIScene extends Phaser.Scene{
         if (!Game.paused){
             this.timeSpent += resolutionTime*GravityBody.simTimes;
         }
+        
+        if (Game.enlarged){
+            this.scaleText.text = "Scale: " + Game.currScale_.toExponential(3) + " meters/pixel\nRadius are upscaled dynamically for better view.\n\nNote: Objects too small is replaced by a dot."
+        }
+        else{
+            this.scaleText.text = "Scale: " + Game.currScale_.toExponential(3) + " meters/pixel\nRadius are upscaled by: " + Game.GravityBodies[0].radiusUpscale/2 + "x\n\nNote: Objects too small is replaced by a dot."
 
-        this.scaleText.text = "Scale: " + Game.currScale_.toExponential(3) + " meters/pixel\nRadius are upscaled by: " + radiusUpscale/2 + "x\n\nNote: Objects too small is replaced by a dot."
+        }
         this.earthDaysText.text = "Earth days: " + (this.timeSpent/86400).toFixed(0);
         this.sidePanelObj.update();
 

@@ -28,8 +28,8 @@ export default class Game extends Phaser.Scene{
         this.currDragging = false;
         this.currMoving = null;
         Game.currScale_ = 1/ screenScale;
-        Game.arrows = false;
-        Game.enlarged = false;
+        Game.arrows = true;
+        Game.enlarged = true;
     }
 
     preload(){

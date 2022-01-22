@@ -9,14 +9,15 @@ const screenScale = 0.000000002; // pixel/meter
 const resolutionTime = 200; // simulated second/frame
 const radiusUpscaleNormal = 2;
 const radiusUpscaleEnlarged = 20;
-var radiusUpscale = 2;
 const labelDegree = -225;
+
+const radiusEnlargeUpscaleCutoff = 20.3;
 
 var middleX = SIZE_WIDTH_SCREEN/2;
 var middleY = SIZE_HEIGHT_SCREEN/2;
 
 var _idIndex = 0;
-export {resolutionTime, radiusUpscale, screenScale};
+export {resolutionTime, screenScale};
 
 // pos vector(aphelion), velocity vector(mininum speed), radius, mass, texture name
 var presets = {
@@ -31,6 +32,7 @@ var presets = {
 export {presets};
 
 export default class GravityBody{
+    radiusUpscale = 2;
     // starting_pos(note coordinates start from the center as 0,0), starting_velocity, radius, (density or mass) in SI units
     constructor(options_temp){
         var options = options_temp;
@@ -101,11 +103,11 @@ export default class GravityBody{
 
         
         // check if we've collided with something else
-        Game.GravityBodies.forEach(function(item, index, array){
-            if (item.id != currID && !item.invisible){
+        Game.GravityBodies.forEach((item, index, array) => {
+            if (item.id != currID && !item.invisible){ 
                 var distVector = pos.clone().subtract(item.pos);
                 //console.log(Math.sqrt(distVector.x*distVector.x + distVector.y*distVector.y));
-                if (Math.sqrt(distVector.x*distVector.x + distVector.y*distVector.y) < ((item.radius + radius))*radiusUpscale){
+                if (Math.sqrt(distVector.x*distVector.x + distVector.y*distVector.y) < (item.radius * item.radiusUpscale + radius * this.radiusUpscale)){
                     if (item.radius <= radius){
                         Game.GravityBodies.splice(Game.GravityBodies.indexOf(item), 1);
                         item.deleteItem();
@@ -157,7 +159,7 @@ export default class GravityBody{
     drawObjPos(){
         this.sprite.setPosition(this.pos.x * screenScale + middleX, this.pos.y * screenScale + middleY);
         this.ball.setPosition(this.sprite.x, this.sprite.y); 
-        var diplacements = this.getAngleDisplacements(this.radius * screenScale * radiusUpscale);
+        var diplacements = this.getAngleDisplacements(this.radius * screenScale * this.radiusUpscale);
         this.label.setPosition(this.sprite.x - diplacements[0], this.sprite.y - diplacements[1] - this.label.displayHeight);
         this.arrow.setPosition(this.sprite.x, this.sprite.y);
         this.arrow.setNewHeight(this.velocity.magnitude() * screenScale * 60 * 10000);
@@ -174,18 +176,23 @@ export default class GravityBody{
         }
 
         if (Game.enlarged){
-            radiusUpscale = radiusUpscaleEnlarged;
+            this.radiusUpscale = radiusUpscaleEnlarged;
+            if ((this.radius * screenScale * this.radiusUpscale * 2) < radiusEnlargeUpscaleCutoff){
+                console.log("hoasdf");
+                this.radiusUpscale = radiusEnlargeUpscaleCutoff / (2 * screenScale * this.radius);
+            }
         }
         else{
-            radiusUpscale = radiusUpscaleNormal;
+            this.radiusUpscale = radiusUpscaleNormal;
         }
+        
         this.setRadius(this.radius);
     }
 
     initDraw(radius, textureName){
         this.ball = this.sceneObj.add.circle(100, 100, 4, 0x00ffff );
         this.sprite = this.sceneObj.add.sprite(-1, -1, textureName).setInteractive({cursor: 'pointer'});
-        this.sprite.displayWidth = radius * screenScale * radiusUpscale *2; // times two for diameter(scaling the image)
+        this.sprite.displayWidth = radius * screenScale * this.radiusUpscale *2; // times two for diameter(scaling the image)
         this.sprite.scaleY = this.sprite.scaleX;
 
         this.setPointer();
@@ -227,7 +234,7 @@ export default class GravityBody{
 
     setRadius(radius){
         this.radius = radius;
-        this.sprite.displayWidth = radius * screenScale * radiusUpscale *2;
+        this.sprite.displayWidth = radius * screenScale * this.radiusUpscale *2;
         this.sprite.scaleY = this.sprite.scaleX;
     }
 
@@ -295,7 +302,7 @@ export default class GravityBody{
             this.pos.x = (this.sprite.x - middleX) / screenScale;
             this.pos.y = (this.sprite.y - middleY) / screenScale;
 
-            var diplacements = this.getAngleDisplacements(this.radius * screenScale * radiusUpscale);
+            var diplacements = this.getAngleDisplacements(this.radius * screenScale * this.radiusUpscale);
             this.label.setPosition(this.sprite.x - diplacements[0], this.sprite.y - diplacements[1] - this.label.displayHeight);
             this.ball.setPosition(this.sprite.x, this.sprite.y);
             this.arrow.setPosition(this.sprite.x, this.sprite.y);
