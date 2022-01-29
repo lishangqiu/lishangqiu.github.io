@@ -84,3 +84,48 @@ h1{
     bottom: 0em;
     right: 0.5em;
 }
+
+
+.profile_box{
+    margin-left: 10px;
+    display: inline-block;
+    height: fit-content;
+    vertical-align: top;
+}
+
+.inner_box{
+    width: fit-content; 
+    margin: 0 auto;
+}
+
+.inner_box p{
+    display: inline;
+    font-size: 15px;
+    font-weight: bold;
+    vertical-align: middle;
+    margin-bottom: 0;
+    height: 100%;
+}
+
+.section_title{
+    margin-bottom: 0em!important;
+    margin-top: 0.1em!important;
+    font-size: 20px!important;
+    text-align: center;
+    font-weight: bold;
+}
+
+.bio_section_title{
+    margin-left: 20px; 
+    font-size: 18px; 
+    background-color: gainsboro;
+    width: fit-content;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+}
+
+td, th{
+    border: 1px solid #ddd;
+    padding: 8px;
+}

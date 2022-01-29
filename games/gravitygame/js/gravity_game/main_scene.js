@@ -102,7 +102,7 @@ export default class Game extends Phaser.Scene{
         }
     }
 
-    createBody(options){
+    createBody(options, laterCreated){
         var config;
         if (options.preset_name == "Custom"){
             console.log(options.posX);
@@ -132,6 +132,10 @@ export default class Game extends Phaser.Scene{
         Game.GravityBodies.push(obj);
         Game.GravityBodiesDict[obj.id] = obj;
         Game.allBodyIds.push(obj.id);
+
+        if (laterCreated){
+            obj.startPositionDrag();
+        }
         return obj.id;
     }
 

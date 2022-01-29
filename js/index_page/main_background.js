@@ -21,17 +21,3 @@ var nodesjs = new NodesJs({
     number: 100,
     speed: 20,
 }, assignToDiv);
-
-var data = [
-    [0, 4, "Good night"], 
-    [5, 11, "Good morning"],          //Store messages in an array
-    [12, 17, "Good afternoon"],
-    [18, 24, "Good evening"]
-],
-    hr = new Date().getHours();
-
-for(var i = 0; i < data.length; i++){
-    if(hr >= data[i][0] && hr <= data[i][1]){
-        document.getElementById('greeting-text').innerHTML= data[i][2] + "!";
-    }
-}

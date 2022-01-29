@@ -32,7 +32,7 @@ export default class SidePanel{
         dom.setOrigin(0, 0);
 
         document.getElementById("plus_button1").onclick = () => {
-            var id = game.scene.getScene("game").createBody({name: "Untitled" + untitledNums, preset_name: "Mercury"});
+            var id = game.scene.getScene("game").createBody({name: "Untitled" + untitledNums, preset_name: "Mercury"}, true);
             untitledNums++;
             this.insertLast();
             game.scene.getScene("UIScene").switchSideBar(id);

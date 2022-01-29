@@ -100,7 +100,9 @@ export default class SidePanelAttribute{
             if (game.scene.getScene("game").currMoving != null){
                 game.scene.getScene("game").currMoving.stopPositionDrag();
             }
-            this.body.startPositionDrag();
+            else{
+                this.body.startPositionDrag();
+            } 
         }
         document.getElementById("body-name-attributes").addEventListener('change', (e) => (this.body.updateName(e.target.value)));
     }
@@ -123,7 +125,6 @@ export default class SidePanelAttribute{
         }
         else{
             document.getElementById("body-name-attributes").value  = this.body.name;
-            console.log(this.body.sprite.texture.key);
             document.getElementById("icon-pic-attributes").src = name_link[this.body.sprite.texture.key];
         }
         document.getElementById("preset-list-attributes").value = this.body.preset; 
