@@ -39,7 +39,7 @@ export default class SidePanelAttribute{
         document.getElementById("body-name-attributes").disabled = false;
 
         this.posXObj.enable();
-        this.posYObj.enable(); 
+        this.posYObj.enable();
         this.directionObj.enable();
         this.speedObj.enable(); 
         this.radiusObj.enable();
