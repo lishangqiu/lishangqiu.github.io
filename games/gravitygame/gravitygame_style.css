@@ -13,14 +13,13 @@ nav {
 .nav-item{
     font-size: 1.23em !important;
 }
-.nav-item a:hover{
+.nav >li > a:hover, .nav > li > a:focus{
     background-color: #335369 !important;
 }
-.nav-item a:active{
-    background-color: #335369 !important;
-}
-.nav-item a:visited{
-    background-color: #335369 !important;
+
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover 
+{
+  background-color: unset !important;
 }
 #games-dropdown > .dropdown-menu a{
     background-color: #ffffff !important;

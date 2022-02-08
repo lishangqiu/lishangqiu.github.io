@@ -16,18 +16,25 @@ nav {
 .navbar-header a{
     font-size: 1.45em !important;
 }
+
+.nav >li > a:hover, .nav > li > a:focus{
+    background-color: #335369 !important;
+}
+
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover 
+{
+  background-color: unset !important;
+}
+
 .nav-item{
+    background-color: #26445a !important;
     font-size: 1.23em !important;
+    background-image: none !important;
+    box-shadow: none;
 }
-.nav-item a:hover{
-    background-color: #335369 !important;
-}
-.nav-item a:active{
-    background-color: #335369 !important;
-}
-.nav-item a:visited{
-    background-color: #335369 !important;
-}
+
+
+
 #games-dropdown > .dropdown-menu a{
     background-color: #ffffff !important;
     color: #000000 !important;
