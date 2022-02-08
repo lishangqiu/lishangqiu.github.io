@@ -35,6 +35,17 @@ export default class SidePanelAttribute{
         this.fillInAttributes();
         this.addListeners();
         document.getElementById("body-name-attributes").value = this.body.name;
+
+        document.getElementById("body-name-attributes").disabled = false;
+
+        this.posXObj.enable();
+        this.posYObj.enable(); 
+        this.directionObj.enable();
+        this.speedObj.enable(); 
+        this.radiusObj.enable();
+        this.massObj.enable();
+        document.getElementById("preset-list-attributes").disabled = false;
+        document.getElementById('icon-list-attributes').disabled = false;
     }
 
     update(){
@@ -227,5 +238,9 @@ class NumberAttributeObj{
 
     disable(){
         this.element.disabled = true;
+    }
+    
+    enable(){
+        this.element.disabled = false;
     }
 }
