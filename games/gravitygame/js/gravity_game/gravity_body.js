@@ -279,12 +279,16 @@ export default class GravityBody{
     }
 
     startPositionDrag(){
+        if (this.deleted){
+            return;
+        }
         Game.setPaused(true);
 
         this.posSprite = this.sceneObj.add.sprite(this.sprite.x, this.sprite.y, "position").setInteractive({cursor: 'pointer'});
-        this.posSprite.displayWidth = 30; // times two for diameter(scaling the image)
+        this.posSprite.displayWidth = 50/game.scene.getScene("game").cameras.main.zoom; // times two for diameter(scaling the image)
         this.posSprite.scaleY = this.posSprite.scaleX;
         this.posSprite.setInteractive({cursor: 'pointer'});
+        this.posSprite.setDepth(10000);
 
         this.posSprite.on('pointerout', () => {this.posSprite.clearTint(); game.scene.getScene("game").currDragging = false;});
         this.posSprite.on('pointerover', () => {this.posSprite.setTint(0xa5a5a5);game.scene.getScene("game").currDragging = true;});
