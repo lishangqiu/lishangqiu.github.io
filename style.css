@@ -75,10 +75,6 @@ h1{
     width: 80em;
 }
 
-#bio-panel > .panel-body *{
-    color: #12232E!important;
-}
-
 .gravity-game{
     text-align: justify;
     width: 307px;
@@ -95,6 +91,7 @@ h1{
 
 .profile_box{
     margin-left: 10px;
+    margin-right: 10px;
     display: inline-block;
     height: fit-content;
     vertical-align: top;
@@ -105,34 +102,33 @@ h1{
     margin: 0 auto;
 }
 
-.inner_box p{
+.section_title{
+    margin-bottom: 0em!important;
+    margin-top: 0.1em!important;
+    font-size: 24px!important;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+td, th{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#contacts_container p{
+    font-size: 16px;
+    margin-bottom: 0;
     display: inline;
     font-size: 15px;
     font-weight: bold;
     vertical-align: middle;
     margin-bottom: 0;
     height: 100%;
+    margin-left: 3px;
 }
 
-.section_title{
-    margin-bottom: 0em!important;
-    margin-top: 0.1em!important;
-    font-size: 20px!important;
-    text-align: center;
-    font-weight: bold;
-}
-
-.bio_section_title{
-    margin-left: 20px; 
-    font-size: 18px; 
-    background-color: gainsboro;
-    width: fit-content;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 5px;
-}
-
-td, th{
-    border: 1px solid #ddd;
-    padding: 8px;
+.inner_profile_box {
+    display: flex; 
+    align-items: center;
 }
