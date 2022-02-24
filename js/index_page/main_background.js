@@ -10,8 +10,8 @@ console.log(canvas.height)
 assignToDiv();
 var nodesjs = new NodesJs({
     id: 'nodes',
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+    height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight,
 
     backgroundFrom: [0, 5, 60],
     backgroundTo: [10, 25, 75],
