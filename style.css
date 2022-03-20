@@ -77,10 +77,15 @@ h1{
 
 .gravity-game{
     text-align: justify;
-    width: 307px;
+    width:fit-content;
+    max-width: fit-content;
     border-style: solid;
     border-color: #396c91;
 }
+
+.gravity-game:before,.gravity-game:after {
+    content: '';
+  }
 
 .node-credit{
     position: fixed;
