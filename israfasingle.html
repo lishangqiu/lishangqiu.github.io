@@ -30,9 +30,16 @@
     }
   </style>
   <script>
+    function getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+    }
     addEventListener('click', (event) => {});
     onclick = (event) => { 
       document.getElementById("bgImg").src="assets/RafaCatPics/amogus.gif";
+      const audio = new Audio("assets/RafaCatPics/amogus" + getRandomIntInclusive(1, 3) +".mp3");
+      audio.play();
     };
     function changeDate()  {
       var date0 = new Date(2022, 7, 11);
@@ -44,15 +51,15 @@
 
   <body onload="changeDate()">
     <img src="assets/RafaCatPics/1.jpg" style="width:100%;height: 100%;" id="bgImg">
-    <p style="position: absolute; top: 19%; width: 100%; font-size: 70px;">
+    <p style="position: absolute; top: 18%; width: 100%; font-size: 5vw;">
       Is Rafa L. Single?
     </p>
-    <p style="position: absolute; top: 35%; width: 100%; font-size: 90px;">
+    <p style="position: absolute; top: 33%; width: 100%; font-size: 11vw;">
       NO
     </p>
     <p style="font-size: 50px; position: absolute; font-style:normal;font-weight: normal; bottom: 20px; left: 20px;">
       😏
-      <span style="margin-left: 50px;font-size: 25px;" id="streakTxt">Streak: 21 days</span>
+      <span style="margin-left: 50px;font-size: 2vw;" id="streakTxt">Streak: 21 days</span>
     </p>
 
   </body>
