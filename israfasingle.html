@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Is Rafa L. Single?</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Answers question that we've all been wondering: Is Rafa L. Single?">
+  </head>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    img {
+      padding: 0;
+      display: block;
+      margin: 0 auto;
+      max-height: 100%;
+      max-width: 100%;
+      z-index:100;
+    }
+    p {
+      font-style: oblique;
+      text-align: center;
+      font-weight: bolder;
+      font-family: Apple Chancery, cursive;
+      color: white;
+      z-index:1;
+    }
+  </style>
+  <script>
+    addEventListener('click', (event) => {});
+    onclick = (event) => { 
+      document.getElementById("bgImg").src="assets/RafaCatPics/amogus.gif";
+    };
+    function changeDate()  {
+      var date0 = new Date(2022, 7, 11);
+      var now = new Date();
+      var days = Math.ceil((now - date0) / 8.64e7);
+      document.getElementById("streakTxt").innerText = "Streak: " + days + " days"
+    }
+  </script>
+
+  <body onload="changeDate()">
+    <img src="assets/RafaCatPics/1.jpg" style="width:100%;height: 100%;" id="bgImg">
+    <p style="position: absolute; top: 19%; width: 100%; font-size: 70px;">
+      Is Rafa L. Single?
+    </p>
+    <p style="position: absolute; top: 35%; width: 100%; font-size: 90px;">
+      NO
+    </p>
+    <p style="font-size: 50px; position: absolute; font-style:normal;font-weight: normal; bottom: 20px; left: 20px;">
+      😏
+      <span style="margin-left: 50px;font-size: 25px;" id="streakTxt">Streak: 21 days</span>
+    </p>
+
+  </body>
+
+
+</html>
