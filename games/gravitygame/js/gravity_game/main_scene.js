@@ -79,8 +79,6 @@ export default class Game extends Phaser.Scene{
         this.createBody({preset_name: "Earth", name: "Earth"});
         this.createBody({preset_name: "Venus", name: "Venus"});
         this.createBody({preset_name: "Mercury", name: "Mercury"});
-        this.createBody({preset_name: "Custom", posX: -180e9, posY: 0, velocityX: 0, velocityY: -35000, 
-                   radius: 50.34e7, mass: 4.989e29, textureName: "Sun", name: "AnotherStar"});
         //this.createBody({preset_name: "Custom", posX: 152.1e9, posY: 0, velocityX: -1000000, velocityY: 10000, radius: 6.73e6, mass: 5.972e24, textureName: "Earth", name: "test"});
 
         Game.gra = this.add.graphics();

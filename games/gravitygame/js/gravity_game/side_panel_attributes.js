@@ -12,7 +12,7 @@ export default class SidePanelAttribute{
         () => {return this.body.pos.y}, (val) => {this.body.setPosY(val);}, 0.001);
 
         this.directionObj = new NumberAttributeObj(document.getElementById("direction-attributes"), 
-        () => {return this.body.velocity.direction()}, (val) => {this.body.setDirection(val)}, (180/Math.PI));
+        () => {return -this.body.velocity.direction()}, (val) => {this.body.setDirection(val)}, (180/Math.PI));
 
         this.speedObj = new NumberAttributeObj(document.getElementById("speed-attributes"), 
         () => {return this.body.velocity.magnitude()}, (val) => {this.body.setMagnitude(val)}, 0.001);

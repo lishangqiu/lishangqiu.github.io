@@ -222,8 +222,9 @@ export default class GravityBody{
     }
 
     setDirection(direction){
+        direction = (-direction)
         this.velocity = MDToVictor(this.velocity.magnitude(), direction);
-        this.arrow.setAngle(this.velocity.direction()/Math.PI*180 + 90);
+        this.arrow.setAngle(this.velocity.direction()/Math.PI*180+90);
     }
 
     setMagnitude(magnitude){

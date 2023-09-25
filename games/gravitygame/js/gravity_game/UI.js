@@ -30,6 +30,7 @@ export default class UIScene extends Phaser.Scene{
         UIScene.buttonImg = this.load.image("button_image", "assets/GravityGame/button.png");
         UIScene.playButtonImg = this.load.image("play_button", "assets/GravityGame/play_button.png");
         UIScene.playButtonImg = this.load.image("pause_button", "assets/GravityGame/pause_button.png");
+        UIScene.restartButtonImg = this.load.image("restart_button", "assets/GravityGame/refresh.png");
 
         UIScene.fullScreenButton = this.load.image("fullscreen_button", "assets/GravityGame/FullScreen.png");
         UIScene.unFullScreenButton = this.load.image("unfullscreen_button", "assets/GravityGame/UnFullScreen.png");
@@ -103,6 +104,8 @@ export default class UIScene extends Phaser.Scene{
             });
         });
         this.add.text(110, 1000, "Enlarge Objects\n(mass doesn't change, only the visuals)");
+
+
     }
 
     update(){
